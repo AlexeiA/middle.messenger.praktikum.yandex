@@ -1,0 +1,52 @@
+---
+fields:
+- name: first_name
+  type: text
+  label: Имя
+- name: second_name
+  type: text
+  label: Фамилия
+- name: display_name
+  type: text
+  label: Имя в чате
+- name: email
+  type: email
+  label: Электронная почта
+- name: phone
+  type: tel
+  label: Телефон
+- name: avatar
+  type: file
+  label: Файл с портретом
+- name: login
+  type: text
+  label: Логин
+- name: oldPassword
+  type: password
+  label: Старый пароль
+- name: newPassword
+  type: password
+  label: Новый пароль
+---
+
+{{!< base}}
+
+<!--
+Настройки пользователя:
+Имена полей для изменения информации о пользователе: first_name, second_name, display_name, login, email, phone;
+Поле для изменения аватара: avatar;
+Поля для изменения пароля: oldPassword, newPassword.
+-->
+
+<main>
+  <h1>Никогда не поздно изменить себя 💪</h1>
+
+	<form>
+		{{#each fields}}
+			<label for="{{name}}">{{label}}</label><input id="{{name}}" name="{{name}}" type="{{type}}">
+		{{/each}}
+		<button>Сохранить</button>
+	</form>
+	<div class="center"><a href="./index.hbs">Назад к чатам</a></div>
+
+</main>

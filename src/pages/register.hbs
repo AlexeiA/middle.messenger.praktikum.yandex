@@ -1,0 +1,35 @@
+---
+fields:
+- name: first_name
+  type: text
+  label: Имя
+- name: second_name
+  type: text
+  label: Фамилия
+- name: email
+  type: email
+  label: Электронная почта
+- name: phone
+  type: tel
+  label: Телефон
+- name: login
+  type: text
+  label: Логин
+- name: password
+  type: password
+  label: Пароль
+---
+
+{{!< base}}
+
+<main>
+  <h1>Нам потребуются ваши персональные данные</h1>
+
+	<form>
+		{{#each fields}}
+			<label for="{{name}}">{{label}}</label><input id="{{name}}" name="{{name}}" type="{{type}}">
+		{{/each}}
+		<button>Зарегистрироваться</button>
+	</form>
+	<div class="center"><a href="./login.hbs">Войти</a></div>
+</main>
