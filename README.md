@@ -12,3 +12,5 @@
 ## Прочее
 
 За основу UI взят образец Яндекса, который был творчески доработан.
+
+[Ссылка на пулл реквест первого спринта](https://github.com/AlexeiA/middle.messenger.praktikum.yandex/pull/4).
