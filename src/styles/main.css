@@ -92,3 +92,14 @@ input[type=file] {
 		}
 	}
 }
+
+.index-page__main {
+	h2 {
+		text-align: center;
+	}
+
+	ul {
+		margin: 0 auto;
+		width: fit-content;
+	}
+}
