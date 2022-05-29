@@ -22,14 +22,11 @@ fields:
 
 {{!< base}}
 
-<main>
-  <h1>Нам потребуются ваши персональные данные</h1>
-
+<main class="login__main">
 	<form>
-		{{#each fields}}
-			<label for="{{name}}">{{label}}</label><input id="{{name}}" name="{{name}}" type="{{type}}">
-		{{/each}}
+		<h1>Регистрация</h1>
+		{{> form this}}
 		<button>Зарегистрироваться</button>
+		<div class="center"><a href="./login.hbs">Войти</a></div>
 	</form>
-	<div class="center"><a href="./login.hbs">Войти</a></div>
 </main>

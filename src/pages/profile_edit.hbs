@@ -38,15 +38,11 @@ fields:
 Поля для изменения пароля: oldPassword, newPassword.
 -->
 
-<main>
-  <h1>Никогда не поздно изменить себя 💪</h1>
-
+<main class="login__main">
 	<form>
-		{{#each fields}}
-			<label for="{{name}}">{{label}}</label><input id="{{name}}" name="{{name}}" type="{{type}}">
-		{{/each}}
+		<h1>Профиль</h1>
+		{{> form this}}
 		<button>Сохранить</button>
+		<div class="center"><a href="./index.hbs">Назад к чатам</a></div>
 	</form>
-	<div class="center"><a href="./index.hbs">Назад к чатам</a></div>
-
 </main>

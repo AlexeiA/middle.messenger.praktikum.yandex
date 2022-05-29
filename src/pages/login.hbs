@@ -1,14 +1,19 @@
+---
+fields:
+- name: login
+  type: text
+  label: Логин
+- name: password
+  type: password
+  label: Пароль
+---
 {{!< base}}
 
-<main>
-  <h1>Представьтесь, пожалуйста</h1>
-
+<main class="login__main">
 	<form>
-		<label for="login">Логин</label>
-		<input id="login" name="login">
-		<label for="password">Пароль</label>
-		<input type="password" id="password" name="password">
+		<h1>Вход</h1>
+		{{> form this}}
 		<button>Войти</button>
+		<div class="center"><a href="./register.hbs">Впервые?</a></div>
 	</form>
-	<div class="center"><a href="./register.hbs">Впервые?</a></div>
 </main>
