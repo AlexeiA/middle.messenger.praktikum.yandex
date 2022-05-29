@@ -11,6 +11,6 @@
 
 ## Прочее
 
-За основу UI взят образец Яндекса, который был творчески доработан.
+За основу UI взят [образец Яндекса](https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link).
 
-[Ссылка на пулл реквест первого спринта](https://github.com/AlexeiA/middle.messenger.praktikum.yandex/pull/4).
+[Ссылка на пулл реквест первого спринта](https://github.com/AlexeiA/middle.messenger.praktikum.yandex/pull/5).
