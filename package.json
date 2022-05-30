@@ -1,0 +1,39 @@
+{
+  "name": "middle.messenger.praktikum.yandex",
+  "version": "0.2.0",
+  "description": "---",
+  "scripts": {
+    "test": "node test/check_routing.js",
+    "serve": "parcel src/pages/index.hbs --no-cache",
+    "start": "node server.js",
+    "build": "parcel build ./src/pages/*.hbs"
+  },
+  "source": "src/index.html",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexeiA/middle.messenger.praktikum.yandex.git"
+  },
+  "keywords": [
+    "praktikum"
+  ],
+  "author": "AlexeiA",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexeiA/middle.messenger.praktikum.yandex/issues"
+  },
+  "homepage": "https://github.com/AlexeiA/middle.messenger.praktikum.yandex#readme",
+  "devDependencies": {
+    "@anikin/parcel-transformer-handlebars": "^1.0.9",
+    "autoprefixer": "^10.4.7",
+    "parcel": "^2.5.0",
+    "postcss": "^8.4.14",
+    "postcss-modules": "^4.3.1",
+    "postcss-nested": "^5.0.6"
+  },
+  "engines": {
+    "node": ">=12"
+  },
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}

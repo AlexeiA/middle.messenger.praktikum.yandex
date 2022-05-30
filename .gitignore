@@ -1,0 +1,6 @@
+/.cache/
+/.github/
+/.idea/
+/.parcel-cache/
+/dist/
+/node_modules/
