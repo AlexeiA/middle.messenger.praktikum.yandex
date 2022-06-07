@@ -23,14 +23,14 @@ export function validateValue(rule: ValidationRule, value: string) {
 			}
 			break;
 		case ValidationRule.Password:
-			if (!/^(.*[A-Z].*){8, 40}$/.test(value)) {
-				if (!/\d/.test(value)) {
-					return 'Должна быть хотя бы одна цифра.';
-				}
-				if (value.length < 8 || value.length > 40) {
-					return 'Длина должна быть от 8 до 40 символов';
-				}
-				return 'От 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра.';
+			if (value.length < 8 || value.length > 40) {
+				return 'Длина должна быть от 8 до 40 символов';
+			}
+			if (!/\d/.test(value)) {
+				return 'Должна быть хотя бы одна цифра';
+			}
+			if (!/[A-ZА-Я]/.test(value)) {
+				return 'Должна быть хотя бы одна заглавная буква';
 			}
 			break;
 	}
