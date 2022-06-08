@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			{to: "#register.hbs", text: "Регистрация"},
 			{to: "#chat.hbs", text: "Список чатов и лента переписки"},
 			{to: "#profile_edit.hbs", text: "Настройки пользователя"},
-			{to: "#404.hbs", text: "Страница 404"},
-			{to: "#500.hbs", text: "Страница 5**"},
+			{to: "#404", text: "Страница 404"},
+			{to: "#500", text: "Страница 5**"},
 		]
 	});
 

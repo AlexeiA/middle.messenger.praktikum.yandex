@@ -4,7 +4,7 @@ import './link.css';
 import {renderDOM} from "../../core";
 //TODO придумать другой способ вместо хардкода (или забить до изобретения Роутера)
 import LoginPage from "../../pages/login";
-// import LoginPage from "../../pages/login";
+import ErrorPage from "../../pages/error";
 
 export interface LinkProps {
 	text: string;
@@ -23,6 +23,18 @@ export class Link extends Block {
 				switch (to.substring(1)) {
 					case "LoginPage":
 						app = new LoginPage();
+						break;
+					case "404":
+						app = new ErrorPage({
+							h1: "404",
+							h2: "Не туда попали"
+						});
+						break;
+					case "500":
+						app = new ErrorPage({
+							h1: "500",
+							h2: "Уже фиксим"
+						});
 						break;
 					default:
 						document.location.href = to;
