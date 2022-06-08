@@ -2,6 +2,8 @@ export enum ValidationRule {
 	Login = 'Login',
 	Email = 'Email',
 	Password = 'Password',
+	Phone = 'Phone',
+	Message = 'Message'
 }
 
 export function validateValue(rule: ValidationRule, value: string) {
@@ -31,6 +33,16 @@ export function validateValue(rule: ValidationRule, value: string) {
 			}
 			if (!/[A-ZА-Я]/.test(value)) {
 				return 'Должна быть хотя бы одна заглавная буква';
+			}
+			break;
+		case ValidationRule.Phone:
+			if (!/^\+?\d{10,15}$/.test(value)) {
+				return 'Телефон должен содержать от 10 до 15 символов, состоять из цифр, может начинается с плюса';
+			}
+			break;
+		case ValidationRule.Message:
+			if (value.length === 0) {
+				return 'Введите хоть что-нибудь';
 			}
 			break;
 	}
