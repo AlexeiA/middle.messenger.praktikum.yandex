@@ -46,5 +46,5 @@ export function validateValue(rule: ValidationRule, value: string) {
 			}
 			break;
 	}
-	return null;
+	return '';
 }

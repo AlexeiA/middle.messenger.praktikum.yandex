@@ -8,7 +8,7 @@ export class Layout extends Block<LayoutProps> {
   protected render(): string {
     // language=hbs
     return `
-      <main data-layout="1"></main>
+      <div data-layout="1"></div>
     `
   }
 }
