@@ -22,7 +22,7 @@ export class LoginPage extends Block {
 				const nextState = {
 					errors: {
 						login: validateValue(ValidationRule.Login, loginData.login),
-						password: validateValue(ValidationRule.Password, loginData.login),
+						password: validateValue(ValidationRule.Password, loginData.password),
 					},
 					values: {...loginData},
 				};
@@ -47,7 +47,7 @@ export class LoginPage extends Block {
 							ref="login"
 							id="login"
 							type="text"
-							placeholder="Login"
+							placeholder=""
 							validationRule="${ValidationRule.Login}"
 						}}}
 
@@ -58,12 +58,12 @@ export class LoginPage extends Block {
 							ref="password"
 							id="password"
 							type="password"
-							placeholder="Password"
+							placeholder=""
 							validationRule="${ValidationRule.Password}"
 						}}}
 
 						{{{Button
-							text="Login"
+							text="Войти"
 							onClick=onLogin
 						}}}
 					</form>

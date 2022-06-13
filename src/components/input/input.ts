@@ -21,7 +21,7 @@ export class Input extends Block {
 					this.refs.error.setProps({text: error});
 				}
 			},
-			onInput: () => {
+			onFocus: () => {
 				this.refs.error.setProps({text: ''});
 			}
 		});
@@ -37,7 +37,7 @@ export class Input extends Block {
 					placeholder=placeholder
 					value=value
 					onBlur=onBlur
-					onInput=onInput
+					onFocus=onFocus
 					ref="input"
 				}}}
 				{{{ErrorComponent ref="error" text=error}}}
