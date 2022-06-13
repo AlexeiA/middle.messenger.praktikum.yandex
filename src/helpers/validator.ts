@@ -3,7 +3,8 @@ export enum ValidationRule {
 	Email = 'Email',
 	Password = 'Password',
 	Phone = 'Phone',
-	Message = 'Message'
+	Message = 'Message',
+	Name = 'Name'
 }
 
 export function validateValue(rule: ValidationRule, value: string) {
@@ -43,6 +44,11 @@ export function validateValue(rule: ValidationRule, value: string) {
 		case ValidationRule.Message:
 			if (value.length === 0) {
 				return 'Введите хоть что-нибудь';
+			}
+			break;
+		case ValidationRule.Name:
+			if (!/^[A-ZА-Я][a-zа-я-]+$/.test(value)) {
+				return 'Имя может быть записано только латиницой или кириллицей, первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов (допустим только дефис)';
 			}
 			break;
 	}
