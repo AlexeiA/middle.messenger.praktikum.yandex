@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const App = new LinksPage({
 		links: [
 			{to: "#LoginPage", text: "Авторизация"},
-			{to: "#register.hbs", text: "Регистрация"},
+			{to: "#RegisterPage", text: "Регистрация"},
 			{to: "#chat.hbs", text: "Список чатов и лента переписки"},
 			{to: "#profile_edit.hbs", text: "Настройки пользователя"},
 			{to: "#404", text: "Страница 404"},
