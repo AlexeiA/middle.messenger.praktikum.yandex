@@ -7,6 +7,7 @@ import LoginPage from "../../pages/login";
 import ErrorPage from "../../pages/error";
 import RegisterPage from "../../pages/register";
 import ProfileEditPage from "../../pages/profile_edit";
+import ChatPage from "../../pages/chat";
 
 export interface LinkProps {
 	text: string;
@@ -23,6 +24,9 @@ export class Link extends Block {
 				const to = this.props.to;
 				let app;
 				switch (to.substring(1)) {
+					case "ChatPage":
+						app = new ChatPage();
+						break;
 					case "LoginPage":
 						app = new LoginPage();
 						break;

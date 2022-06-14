@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		links: [
 			{to: "#LoginPage", text: "Авторизация"},
 			{to: "#RegisterPage", text: "Регистрация"},
-			{to: "#chat.hbs", text: "Список чатов и лента переписки"},
+			{to: "#ChatPage", text: "Список чатов и лента переписки"},
 			{to: "#ProfileEditPage", text: "Настройки пользователя"},
 			{to: "#404", text: "Страница 404"},
 			{to: "#500", text: "Страница 5**"},
