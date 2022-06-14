@@ -9,6 +9,7 @@ import Layout from './components/layout';
 import LinksPage from "./pages/links";
 import InputBase from "./components/input-base";
 import ErrorComponent from "./components/error";
+import ChatSummary from "./components/chat-summary";
 
 registerComponent(Button);
 registerComponent(Link);
@@ -16,6 +17,7 @@ registerComponent(Input);
 registerComponent(Layout);
 registerComponent(InputBase);
 registerComponent(ErrorComponent);
+registerComponent(ChatSummary);
 
 document.addEventListener("DOMContentLoaded", () => {
 	const App = new LinksPage({
