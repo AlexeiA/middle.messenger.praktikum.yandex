@@ -6,4 +6,5 @@
 	white-space: nowrap;
 	max-width: var(--input-max-width);
 	height: 1em;
+	cursor: help;
 }
