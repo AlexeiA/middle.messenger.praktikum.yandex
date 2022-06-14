@@ -26,36 +26,36 @@ export class ChatPage extends Block {
 			{{#Layout name="Chat" }}
 				<div class="chats">
 					{{{ChatSummary
-						display_name = 'Тот парень'
+						display_name = 'Первый контакт'
 						img = '/static/avatar_generic.png'
-						message = 'Крайнее сообщение от парня'
+						message = 'Крайнее сообщение от первого контакта'
 						message_time = '01:23'
 					}}}
 					{{{ChatSummary
-						display_name = 'Тот девушка'
+						display_name = 'Второй контакт'
 						img = '/static/avatar_generic.png'
-						message = 'Крайнее сообщение от девушки'
+						message = 'Крайнее сообщение от второго контакта'
 						message_time = '02:34'
 					}}}
 					{{{ChatSummary
-						display_name = 'Тот бабушка'
+						display_name = 'Третий контакт'
 						img = '/static/avatar_generic.png'
-						message = 'Крайнее сообщение от бабушки'
+						message = 'Крайнее сообщение от третьего контакта'
 						message_time = '03:45'
 					}}}
                 </div>
 				<div class="chat">
 					<div class="chat-header">
-						Тот девушка
+						Первый контакт
 					</div>
 					<hr>
 					<div class="history">
-						<p class="message to">Я помню чудное мгновенье</p>
-						<p class="message to">Передо мной явилось ты</p>
-						<p class="message from">Явился</p>
-						<p class="message from">Явилась*</p>
+						<p class="message to">Lorem ipsum dolor sit amet.</p>
+						<p class="message to">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+						<p class="message from">Lorem ipsum dolor.</p>
+						<p class="message from">Lorem ipsum dolor sit amet.</p>
 						<p class="message to">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, excepturi.</p>
-						<p class="message from">О, ты знаешь латынь О_о</p>
+						<p class="message from">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
 					</div>
 					<hr>
 					<div class="message-new">
