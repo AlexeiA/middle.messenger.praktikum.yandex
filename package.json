@@ -36,7 +36,9 @@
     "parcel": "^2.5.0",
     "postcss": "^8.4.14",
     "postcss-modules": "^4.3.1",
-    "postcss-nested": "^5.0.6"
+    "postcss-nested": "^5.0.6",
+    "stylelint": "^14.9.1",
+    "stylelint-config-standard": "^26.0.0"
   },
   "engines": {
     "node": ">=12"
