@@ -4,9 +4,13 @@
   "description": "---",
   "scripts": {
     "test": "node test/check_routing.js",
-    "serve": "parcel src/pages/index.hbs --no-cache",
+    "serve": "parcel serve",
     "start": "node server.js",
-    "build": "parcel build ./src/pages/*.hbs"
+    "build": "parcel build"
+  },
+  "alias": {
+    "nanoid": "./node_modules/nanoid/index.browser",
+    "handlebars": "./node_modules/handlebars/dist/cjs/handlebars"
   },
   "source": "src/index.html",
   "repository": {
