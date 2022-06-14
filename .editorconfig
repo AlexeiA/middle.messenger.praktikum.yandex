@@ -2,3 +2,7 @@ root = true
 
 [*.{js,ts}]
 indent_style = tab
+
+[*.{css,pcss}]
+indent_style = space
+indent_size = 2
