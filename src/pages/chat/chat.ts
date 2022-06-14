@@ -6,54 +6,13 @@ import {validateValue, ValidationRule} from "../../helpers/validator";
 export class ChatPage extends Block {
 	protected getStateFromProps() {
 		this.state = {
-			values: {
-				display_name: '',
-				first_name: '',
-				second_name: '',
-				email: '',
-				phone: '',
-				avatar: '',
-				login: '',
-				oldPassword: '',
-				newPassword: '',
-			},
-			errors: {
-				display_name: '',
-				first_name: '',
-				second_name: '',
-				email: '',
-				phone: '',
-				avatar: '',
-				login: '',
-				oldPassword: '',
-				newPassword: '',
-			},
-			onSave: () => {
-				const loginData = {
-					//TODO DRY
-					display_name: (this.refs.display_name.refs.input.element as HTMLInputElement).value,
-					first_name: (this.refs.first_name.refs.input.element as HTMLInputElement).value,
-					second_name: (this.refs.second_name.refs.input.element as HTMLInputElement).value,
-					email: (this.refs.email.refs.input.element as HTMLInputElement).value,
-					phone: (this.refs.phone.refs.input.element as HTMLInputElement).value,
-					avatar: (this.refs.avatar.refs.input.element as HTMLInputElement).value,
-					login: (this.refs.login.refs.input.element as HTMLInputElement).value,
-					oldPassword: (this.refs.oldPassword.refs.input.element as HTMLInputElement).value,
-					newPassword: (this.refs.newPassword.refs.input.element as HTMLInputElement).value
-				};
+			value: '',
+			error: '',
+			sendMessage: () => {
+				const value = (this.refs.message.refs.input.element as HTMLInputElement).value;
 				const nextState = {
-					errors: {
-						display_name: validateValue(ValidationRule.Login, loginData.display_name),
-						first_name: validateValue(ValidationRule.Name, loginData.first_name),
-						second_name: validateValue(ValidationRule.Name, loginData.second_name),
-						email: validateValue(ValidationRule.Email, loginData.email),
-						phone: validateValue(ValidationRule.Phone, loginData.phone),
-						avatar: '',
-						login: validateValue(ValidationRule.Login, loginData.login),
-						oldPassword: '',
-						newPassword: validateValue(ValidationRule.Password, loginData.newPassword),
-					},
-					values: {...loginData},
+					value: value,
+					error: validateValue(ValidationRule.Message, value)
 				};
 				this.setState(nextState);
 			}
@@ -61,13 +20,61 @@ export class ChatPage extends Block {
 	}
 
 	render() {
-		const {errors, values} = this.state;
-
+		const {value, error} = this.state;
 		// language=hbs
 		return `
 			{{#Layout name="Chat" }}
-				<h1>Страница чатов и лента переписки (заглушка)</h1>
-				<p class="center"><input name="message" placeholder="Сообщение"><button>></button></p>
+				<div class="chats">
+					{{{ChatSummary
+						display_name = 'Тот парень'
+						img = '/static/avatar_generic.png'
+						message = 'Крайнее сообщение от парня'
+						message_time = '01:23'
+					}}}
+					{{{ChatSummary
+						display_name = 'Тот девушка'
+						img = '/static/avatar_generic.png'
+						message = 'Крайнее сообщение от девушки'
+						message_time = '02:34'
+					}}}
+					{{{ChatSummary
+						display_name = 'Тот бабушка'
+						img = '/static/avatar_generic.png'
+						message = 'Крайнее сообщение от бабушки'
+						message_time = '03:45'
+					}}}
+                </div>
+				<div class="chat">
+					<div class="chat-header">
+						Тот девушка
+					</div>
+					<hr>
+					<div class="history">
+						<p class="message to">Я помню чудное мгновенье</p>
+						<p class="message to">Передо мной явилось ты</p>
+						<p class="message from">Явился</p>
+						<p class="message from">Явилась*</p>
+						<p class="message to">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, excepturi.</p>
+						<p class="message from">О, ты знаешь латынь О_о</p>
+					</div>
+					<hr>
+					<div class="message-new">
+                        {{{Input
+							label=""
+							value="${value}"
+							error="${error}"
+							ref="message"
+							id="message"
+							type="text"
+							placeholder="Сообщение"
+							validationRule="${ValidationRule.Message}"
+                        }}}
+						{{{Button
+							text="Отправить"
+							onClick=sendMessage
+						}}}
+					</div>
+				</div>
 			{{/Layout}}
 		`;
 	}
