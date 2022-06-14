@@ -6,6 +6,7 @@ import {renderDOM} from "../../core";
 import LoginPage from "../../pages/login";
 import ErrorPage from "../../pages/error";
 import RegisterPage from "../../pages/register";
+import ProfileEditPage from "../../pages/profile_edit";
 
 export interface LinkProps {
 	text: string;
@@ -27,6 +28,9 @@ export class Link extends Block {
 						break;
 					case "RegisterPage":
 						app = new RegisterPage();
+						break;
+					case "ProfileEditPage":
+						app = new ProfileEditPage();
 						break;
 					case "404":
 						app = new ErrorPage({
