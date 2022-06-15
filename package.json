@@ -6,7 +6,7 @@
     "test": "node test/check_routing.js",
     "serve": "parcel serve",
     "start": "node server.js",
-    "build": "parcel build src/index.html src/static/avatar_generic.png --no-scope-hoist"
+    "build": "parcel build src/index.html src/static/avatar_generic.png --no-scope-hoist --no-optimize"
   },
   "alias": {
     "nanoid": "./node_modules/nanoid/index.browser",
