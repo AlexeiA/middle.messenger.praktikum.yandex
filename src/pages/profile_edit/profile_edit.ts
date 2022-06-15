@@ -41,6 +41,7 @@ export class ProfileEditPage extends Block {
 					oldPassword: (this.refs.oldPassword.refs.input.element as HTMLInputElement).value,
 					newPassword: (this.refs.newPassword.refs.input.element as HTMLInputElement).value
 				};
+				console.log(loginData);
 				const nextState = {
 					errors: {
 						display_name: validateValue(ValidationRule.Login, loginData.display_name),

@@ -32,6 +32,7 @@ export class RegisterPage extends Block {
 					login: (this.refs.login.refs.input.element as HTMLInputElement).value,
 					password: (this.refs.password.refs.input.element as HTMLInputElement).value
 				};
+				console.log(loginData);
 				const nextState = {
 					errors: {
 						first_name: validateValue(ValidationRule.Name, loginData.first_name),

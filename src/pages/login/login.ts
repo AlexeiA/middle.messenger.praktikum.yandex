@@ -19,6 +19,7 @@ export class LoginPage extends Block {
 					login: (this.refs.login.refs.input.element as HTMLInputElement).value,
 					password: (this.refs.password.refs.input.element as HTMLInputElement).value
 				};
+				console.log(loginData);
 				const nextState = {
 					errors: {
 						login: validateValue(ValidationRule.Login, loginData.login),
