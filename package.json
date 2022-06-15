@@ -6,11 +6,11 @@
     "test": "node test/check_routing.js",
     "serve": "parcel serve",
     "start": "node server.js",
-    "build": "parcel build src/index.html src/static/avatar_generic.png --no-cache"
+    "build": "parcel build src/index.html src/static/avatar_generic.png --no-scope-hoist"
   },
   "alias": {
     "nanoid": "./node_modules/nanoid/index.browser",
-    "handlebars": "./node_modules/handlebars/dist/cjs/handlebars"
+    "handlebars": "./node_modules/handlebars/dist/handlebars"
   },
   "source": "src/index.html",
   "repository": {
