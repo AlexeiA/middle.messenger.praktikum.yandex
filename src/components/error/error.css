@@ -1,0 +1,10 @@
+.input__error {
+  font-size: 0.75rem;
+  color: red;
+  text-overflow: ellipsis;
+  overflow: clip;
+  white-space: nowrap;
+  max-width: var(--input-max-width);
+  height: 1em;
+  cursor: help;
+}
