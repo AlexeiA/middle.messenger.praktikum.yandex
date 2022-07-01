@@ -123,7 +123,7 @@ export class RegisterPage extends Block {
 						}}}
 						{{{Link
 							text="Войти"
-							to="#LoginPage"
+							to="/"
 						}}}
 					</form>
 				</main>

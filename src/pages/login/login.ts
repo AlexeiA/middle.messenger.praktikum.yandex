@@ -68,6 +68,7 @@ export class LoginPage extends Block {
 							onClick=onLogin
 						}}}
 					</form>
+                    {{{Link text="Впервые?" to="/sign-up"}}}
 				</main>
 			{{/Layout}}
 		`;
