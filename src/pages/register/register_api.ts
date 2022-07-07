@@ -60,7 +60,7 @@ export const register = async (
 		const user = await RegisterApi.user();
 		console.log(user);
 		dispatch({ isLoading: false, registerFormError: null, user });
-		router.go('/settings');
+		router.go('/messenger');
 	}
 	catch (error) {
 		console.error(error);
