@@ -62,9 +62,14 @@ class Router {
 		return this;
 	}
 
-	start() {
+	start(pathname?: string) {
 		this.init();
-		this._onRoute(window.location.pathname);
+		if (pathname) {
+			this._onRoute(pathname);
+		}
+		else {
+			this._onRoute(window.location.pathname);
+		}
 	}
 
 	init() {
@@ -110,14 +115,3 @@ class Router {
 }
 
 export default new Router('#app');
-
-// Необходимо оставить в силу особенностей тренажёра
-// history.pushState({}, '', '/');
-
-// const router = new Router(".app");
-
-// Можно обновиться на /user и получить сразу пользователя
-// router
-// 	.use("/", Chats)
-// 	.use("/users", Users)
-// 	.start();
