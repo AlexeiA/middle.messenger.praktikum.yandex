@@ -11,7 +11,6 @@ export enum METHODS {
  * На выходе: строка. Пример: ?a=1&b=2&c=[object Object]&k=1,2,3
  */
 function queryStringify(data: {}) {
-	// Можно делать трансформацию GET-параметров в отдельной функции
 	return '?' + toArray(data).join('&');
 }
 
@@ -33,30 +32,30 @@ function toArray(obj: any) {
 
 interface IRequestOptions {
 	method: METHODS;
-	data: any;
-	headers: [];
+	data?: any;
+	headers?: Record<string, string>;
 	timeout?: number;
+	credentials?: boolean;
 }
 
+type RequestOptions = Omit<IRequestOptions, 'method'>;
+
 export default class HTTPTransport {
-	get = (url: string, options: IRequestOptions) => {
+	get = (url: string, options: RequestOptions) => {
 		return this.request(url, {...options, method: METHODS.GET}, options.timeout);
 	};
-	put = (url: string, options: IRequestOptions) => {
+	put = (url: string, options: RequestOptions) => {
 		return this.request(url, {...options, method: METHODS.PUT}, options.timeout);
 	};
-	post = (url: string, options: IRequestOptions) => {
+	post = (url: string, options: RequestOptions) => {
 		return this.request(url, {...options, method: METHODS.POST}, options.timeout);
 	};
-	delete = (url: string, options: IRequestOptions) => {
+	delete = (url: string, options: RequestOptions) => {
 		return this.request(url, {...options, method: METHODS.DELETE}, options.timeout);
 	};
 
-	// options:
-	// headers — obj
-	// data — obj
 	request = (url: string, options: IRequestOptions, timeout = 5000) => {
-		return new Promise((resolve, reject) => {
+		return new Promise<XMLHttpRequest>((resolve, reject) => {
 			console.log(resolve, reject);
 			let data = options.data;
 			let method = options.method;
@@ -65,6 +64,9 @@ export default class HTTPTransport {
 			}
 
 			const xhr = new XMLHttpRequest();
+			if (options.credentials) {
+				xhr.withCredentials = true;
+			}
 			xhr.open(options.method, url);
 
 			if (options.headers) {
@@ -93,6 +95,7 @@ export default class HTTPTransport {
 				xhr.send();
 			}
 			else {
+				xhr.setRequestHeader('Content-Type', 'application/json');
 				xhr.send(JSON.stringify(data));
 			}
 		})

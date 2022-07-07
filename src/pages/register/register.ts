@@ -1,4 +1,6 @@
 import Block from '../../core/Block';
+import store from '../../core/Store';
+import {register} from './register_api'
 
 import './register.pcss';
 import {validateValue, ValidationRule} from "../../helpers/validator";
@@ -45,13 +47,19 @@ export class RegisterPage extends Block {
 					values: {...loginData},
 				};
 				this.setState(nextState);
+
+				const hasError = Object.values(nextState.errors).some(val => val !== '');
+				if (!hasError) {
+					console.log('store.dispatch', 'register', loginData)
+					store.dispatch(register, loginData);
+				}
 			}
 		}
 	}
 
 	render() {
 		const {errors, values} = this.state;
-
+		const isLoading = store.getState().isLoading;
 		// language=hbs
 		return `
 			{{#Layout name="Login" }}
@@ -120,6 +128,7 @@ export class RegisterPage extends Block {
 						{{{Button
 							text="Зарегистрироваться"
 							onClick=onLogin
+							disabled="${isLoading}"
 						}}}
 						{{{Link
 							text="Войти"
