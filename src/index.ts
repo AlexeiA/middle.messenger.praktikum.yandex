@@ -15,6 +15,8 @@ import RegisterPage from "./pages/register";
 import ChatPage from "./pages/chat";
 import ProfileEditPage from "./pages/profile_edit";
 import ErrorPage from "./pages/error";
+import {LoginApi} from "./pages/login/login_api";
+import store from "./core/Store";
 
 registerComponent(Button);
 registerComponent(Link);
@@ -25,12 +27,19 @@ registerComponent(ErrorComponent);
 registerComponent(ChatSummary);
 
 document.addEventListener("DOMContentLoaded", () => {
-	// 		{to: "#404", text: "Страница 404"},
-	// 		{to: "#500", text: "Страница 5**"},
 	router
 		.use('/', LoginPage)
 		.use('/sign-up', RegisterPage)
 		.use('/messenger', ChatPage)
 		.use('/settings', ProfileEditPage)
-		.start();
+		.use('/404', ErrorPage)
+		.use('/500', ErrorPage);
+
+	LoginApi.user().then((user) => {
+		store.set({user});
+		router.init().go('/messenger');
+	}, (reason) => {
+		console.warn(reason);
+		router.start();
+	});
 });

@@ -63,12 +63,19 @@ class Router {
 	}
 
 	start() {
-		window.onpopstate = event => {
-			this._onRoute(event.currentTarget.location.pathname);
-		};
-
+		this.init();
 		this._onRoute(window.location.pathname);
 	}
+
+	init() {
+		window.onpopstate = this.onpopstate;
+		return this;
+	}
+
+	private onpopstate = (event: PopStateEvent)  => {
+		// @ts-ignore
+		this._onRoute(event.currentTarget.location.pathname);
+	};
 
 	_onRoute(pathname: string) {
 		const route = this.getRoute(pathname);
