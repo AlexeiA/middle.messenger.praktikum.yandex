@@ -37,7 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	LoginApi.user().then((user) => {
 		store.set({user});
-		router.init().go('/messenger');
+		if (window.location.pathname === '/') {
+			router.start('/messenger');
+		}
+		else {
+			router.start();
+		}
 	}, (reason) => {
 		console.warn(reason);
 		router.start();
