@@ -2,21 +2,13 @@ import Block from '../../core/Block';
 
 import './profile_edit.pcss';
 import {validateValue, ValidationRule} from "../../helpers/validator";
+import store from "../../core/Store";
+import {updateUser} from "./user_api";
 
 export class ProfileEditPage extends Block {
 	protected getStateFromProps() {
 		this.state = {
-			values: {
-				display_name: '',
-				first_name: '',
-				second_name: '',
-				email: '',
-				phone: '',
-				avatar: '',
-				login: '',
-				oldPassword: '',
-				newPassword: '',
-			},
+			values: store.getState().user,
 			errors: {
 				display_name: '',
 				first_name: '',
@@ -29,7 +21,7 @@ export class ProfileEditPage extends Block {
 				newPassword: '',
 			},
 			onSave: () => {
-				const loginData = {
+				const userData = {
 					//TODO DRY
 					display_name: (this.refs.display_name.refs.input.element as HTMLInputElement).value,
 					first_name: (this.refs.first_name.refs.input.element as HTMLInputElement).value,
@@ -41,38 +33,48 @@ export class ProfileEditPage extends Block {
 					oldPassword: (this.refs.oldPassword.refs.input.element as HTMLInputElement).value,
 					newPassword: (this.refs.newPassword.refs.input.element as HTMLInputElement).value
 				};
-				console.log(loginData);
+				console.log(userData);
 				const nextState = {
 					errors: {
-						display_name: validateValue(ValidationRule.Login, loginData.display_name),
-						first_name: validateValue(ValidationRule.Name, loginData.first_name),
-						second_name: validateValue(ValidationRule.Name, loginData.second_name),
-						email: validateValue(ValidationRule.Email, loginData.email),
-						phone: validateValue(ValidationRule.Phone, loginData.phone),
+						display_name: validateValue(ValidationRule.Login, userData.display_name),
+						first_name: validateValue(ValidationRule.Name, userData.first_name),
+						second_name: validateValue(ValidationRule.Name, userData.second_name),
+						email: validateValue(ValidationRule.Email, userData.email),
+						phone: validateValue(ValidationRule.Phone, userData.phone),
 						avatar: '',
-						login: validateValue(ValidationRule.Login, loginData.login),
+						login: validateValue(ValidationRule.Login, userData.login),
 						oldPassword: '',
-						newPassword: validateValue(ValidationRule.Password, loginData.newPassword),
+						newPassword: validateValue(ValidationRule.Password, userData.newPassword),
 					},
-					values: {...loginData},
+					values: {...userData},
 				};
+				const avatarData = nextState.values.avatar !== this.state.values.avatar ? document.querySelector('main form input[type=file]').files[0] : null;
 				this.setState(nextState);
+
+				const hasError = Object.values(nextState.errors).some(val => val !== '');
+				if (!hasError) {
+					const userDataExt = {...userData, avatarData };
+					store.dispatch(updateUser, userDataExt);
+				}
 			}
 		}
 	}
 
 	render() {
 		const {errors, values} = this.state;
+		const avatar = process.env.API_ENDPOINT + '/resources' + this.state.values.avatar;
+		const isLoading = store.getState().isLoading;
 
 		// language=hbs
 		return `
 			{{#Layout name="ProfileEdit" }}
 				<main class="login__main">
 					<h1>Профиль</h1>
+					<img class="avatar" src="${avatar}" alt="Аватарка">
 					<form>
 						{{{Input
 							label="Имя"
-							value="${values.first_name}"
+							value="${values.first_name || ''}"
 							error="${errors.first_name}"
 							ref="first_name"
 							id="first_name"
@@ -82,7 +84,7 @@ export class ProfileEditPage extends Block {
 						}}}
 						{{{Input
 							label = "Фамилия"
-							value="${values.second_name}"
+							value="${values.second_name || ''}"
 							error="${errors.second_name}"
 							ref="second_name"
 							id="second_name"
@@ -92,7 +94,7 @@ export class ProfileEditPage extends Block {
 						}}}
 						{{{Input
 							label = "Имя в чате"
-							value="${values.display_name}"
+							value="${values.display_name || ''}"
 							error="${errors.display_name}"
 							ref="display_name"
 							id="display_name"
@@ -102,7 +104,7 @@ export class ProfileEditPage extends Block {
 						}}}
 						{{{Input
 							label = "Электронная почта"
-							value="${values.email}"
+							value="${values.email || ''}"
 							error="${errors.email}"
 							ref="email"
 							id="email"
@@ -112,7 +114,7 @@ export class ProfileEditPage extends Block {
 						}}}
 						{{{Input
 							label = "Телефон"
-							value="${values.phone}"
+							value="${values.phone || ''}"
 							error="${errors.phone}"
 							ref="phone"
 							id="phone"
@@ -161,10 +163,11 @@ export class ProfileEditPage extends Block {
 						{{{Button
 							text="Сохранить"
 							onClick=onSave
+							disabled="${isLoading}"
 						}}}
 						{{{Link
 							text="Назад к чатам"
-							to="#ChatPage"
+							to="/messenger"
 						}}}
 					</form>
 				</main>
