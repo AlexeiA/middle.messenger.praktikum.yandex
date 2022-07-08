@@ -10,7 +10,6 @@ type Events = Values<typeof Block.EVENTS>;
 
 export default class Block<P = any> {
 	static EVENTS = {
-		BEFORE_INIT: 'beforeinit',
 		INIT: 'init',
 		FLOW_CDM: 'flow:component-did-mount',
 		FLOW_CDU: 'flow:component-did-update',
@@ -63,16 +62,9 @@ export default class Block<P = any> {
 		this.state = {};
 	}
 
-	beforeinit(): boolean {
-		console.info('Block.beforeinit');
-		return true;
-	}
-
 	init() {
-		if (this.beforeinit()) {
-			this._createResources();
-			this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props);
-		}
+		this._createResources();
+		this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props);
 	}
 
 	_componentDidMount(props: P) {
