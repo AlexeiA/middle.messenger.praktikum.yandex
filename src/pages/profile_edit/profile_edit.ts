@@ -6,7 +6,17 @@ import store from "../../core/Store";
 import {updateUser} from "./user_api";
 
 export class ProfileEditPage extends Block {
+	constructor() {
+		super();
+		store.on('changed', (prevState, nextState) => {
+			console.log('onstorechanged', prevState, nextState);
+			this.setState({values: {...nextState.user}});
+			this.render();
+		});
+	}
+
 	protected getStateFromProps() {
+		console.log('getStateFromProps', this);
 		this.state = {
 			values: store.getState().user,
 			errors: {
@@ -70,7 +80,7 @@ export class ProfileEditPage extends Block {
 			{{#Layout name="ProfileEdit" }}
 				<main class="login__main">
 					<h1>Профиль</h1>
-					<img class="avatar" src="${avatar}" alt="Аватарка">
+					<img class="avatar profile__avatar" src="${avatar}" alt="Аватарка">
 					<form>
 						{{{Input
 							label="Имя"

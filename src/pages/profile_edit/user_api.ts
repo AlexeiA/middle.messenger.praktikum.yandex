@@ -68,7 +68,6 @@ export const updateUser = async (
 	dispatch({ isLoading: true });
 
 	try {
-		// await UserApi.profilePassword(data);
 		let user = await UserApi.profile(data) as User;
 		console.log(user);
 
@@ -77,15 +76,13 @@ export const updateUser = async (
 			console.log(user);
 		}
 		//TODO if password changed
+		// await UserApi.profilePassword(data);
 
-		dispatch({ isLoading: false, loginFormError: null, user });
+		dispatch({ isLoading: false, user });
 		// router.go('/settings');
 	}
 	catch (error) {
 		console.error(error);
-		// await UserApi.logout();
-		// @ts-ignore
-		dispatch({ isLoading: false, loginFormError: error?.reason || 'Unknown Error', user: null });
-		// router.go('/');
+		alert(`Ошибка: ${error?.reason}`);
 	}
 };
