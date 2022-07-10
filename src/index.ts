@@ -13,6 +13,7 @@ import ChatSummary from "./components/chat-summary";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
 import ChatPage from "./pages/chat";
+import ChatsBlock from "./components/chats";
 import ProfileEditPage from "./pages/profile_edit";
 import ErrorPage from "./pages/error";
 import {LoginApi} from "./pages/login/login_api";
@@ -25,6 +26,7 @@ registerComponent(Layout);
 registerComponent(InputBase);
 registerComponent(ErrorComponent);
 registerComponent(ChatSummary);
+registerComponent(ChatsBlock);
 
 document.addEventListener("DOMContentLoaded", () => {
 	router

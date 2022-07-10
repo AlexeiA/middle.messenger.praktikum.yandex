@@ -13,6 +13,7 @@ declare global {
 		loginFormError: string | null;
 		registerFormError: string | null;
 		user: User | null;
+		chats: []
 	};
 
 	export type User = {
@@ -24,6 +25,20 @@ declare global {
 		avatar: string;
 		phone: string;
 		email: string;
+	};
+	
+	export type ChatsData = ChatData[];
+
+	export type ChatData = {
+		id: number,
+		title: string,
+		avatar: string,
+		unread_count: number,
+		last_message: {
+			user: User,
+			time: string,
+			content: string
+		}
 	};
 }
 

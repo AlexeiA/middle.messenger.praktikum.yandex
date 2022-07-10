@@ -1,5 +1,4 @@
 import EventBus from './EventBus';
-import {User} from "../../typings/app";
 
 export type Dispatch<State> = (
   nextStateOrAction: Partial<State> | Action<State>,
@@ -49,5 +48,6 @@ export default new Store<AppState>({
 	isLoading: false,
 	loginFormError: null,
 	registerFormError: null,
-	user: null
+	user: null,
+	chats: []
 });

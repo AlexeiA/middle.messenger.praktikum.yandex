@@ -25,23 +25,7 @@ export class ChatPage extends Block {
 		return `
 			{{#Layout name="Chat" }}
 				<div class="chats">
-					{{{ChatSummary
-						display_name = 'Первый контакт'
-						img = '/static/avatar_generic.png'
-						message = 'Крайнее сообщение от первого контакта'
-						message_time = '01:23'
-					}}}
-					{{{ChatSummary
-						display_name = 'Второй контакт'
-						img = '/static/avatar_generic.png'
-						message = 'Крайнее сообщение от второго контакта'
-						message_time = '02:34'
-					}}}
-					{{{ChatSummary
-						display_name = 'Третий контакт'
-						img = '/static/avatar_generic.png'
-						message = 'Крайнее сообщение от третьего контакта'
-						message_time = '03:45'
+                	{{{ChatsBlock
 					}}}
                 </div>
 				<div class="chat">
