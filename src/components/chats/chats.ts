@@ -8,7 +8,7 @@ export class ChatsBlock extends Block {
 	constructor() {
 		super();
 		store.on('changed', (prevState, nextState) => {
-			this.render();
+			this.setState({chats: store.getState().chats});
 		});
 		store.dispatch(getChats);
 	}
@@ -28,9 +28,9 @@ export class ChatsBlock extends Block {
                     {{#each chats}}
                         {{{ChatSummary
 							display_name = this.title
-							img = '/static/avatar_generic.png'
-							message = 'Крайнее сообщение от первого контакта'
-							message_time = '01:23'
+							img = this.avatar
+							message = this.last_message.content
+							message_time = this.last_message.time
                         }}}
                     {{/each}}
 				{{else}}
@@ -38,7 +38,6 @@ export class ChatsBlock extends Block {
 						Загрузка...
 					{{/if}}
 				{{/if}}
-				
             </div>
 		`;
 	}

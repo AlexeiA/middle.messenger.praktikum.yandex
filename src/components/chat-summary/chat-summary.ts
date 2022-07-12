@@ -11,7 +11,9 @@ interface ChatSummaryProps {
 
 export class ChatSummary extends Block {
 	constructor(props: ChatSummaryProps) {
-		super(props);
+		super({...props, events: {click: () => {
+			this.element?.classList.add('chat-summary_selected');
+		}}});
 	}
 
 	protected render(): string {

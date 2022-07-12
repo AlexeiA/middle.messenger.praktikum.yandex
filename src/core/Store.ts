@@ -49,5 +49,6 @@ export default new Store<AppState>({
 	loginFormError: null,
 	registerFormError: null,
 	user: null,
-	chats: []
+	chats: [],
+	currentToken: null,
 });

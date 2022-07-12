@@ -67,14 +67,16 @@ export default abstract class Block<P = any> {
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props);
 	}
 
-	_componentDidMount(props: P) {
+	private _componentDidMount(props: P) {
+		console.log('_componentDidMount', this, props);
 		this.componentDidMount(props);
 	}
 
 	componentDidMount(props: P) {
 	}
 
-	_componentDidUpdate(oldProps: P, newProps: P) {
+	private _componentDidUpdate(oldProps: P, newProps: P) {
+		console.log('_componentDidUpdate', oldProps, newProps);
 		const response = this.componentDidUpdate(oldProps, newProps);
 		if (!response) {
 			return;
