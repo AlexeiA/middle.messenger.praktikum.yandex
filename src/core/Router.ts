@@ -83,10 +83,11 @@ class Router {
 	};
 
 	_onRoute(pathname: string) {
-		const route = this.getRoute(pathname);
+		console.log('_onRoute', pathname);
+		let route = this.getRoute(pathname);
 		if (!route) {
 			if (pathname !== '/404') {
-				this._onRoute('/404');
+				route = this.getRoute('/404');
 			}
 			else {
 				throw new Error('pathname is not registered');

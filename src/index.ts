@@ -15,7 +15,7 @@ import RegisterPage from "./pages/register";
 import ChatPage from "./pages/chat";
 import ChatsBlock from "./components/chats";
 import ProfileEditPage from "./pages/profile_edit";
-import ErrorPage from "./pages/error";
+import {ErrorPage404, ErrorPage500} from "./pages/error";
 import {LoginApi} from "./pages/login/login_api";
 import store from "./core/Store";
 
@@ -34,8 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		.use('/sign-up', RegisterPage)
 		.use('/messenger', ChatPage)
 		.use('/settings', ProfileEditPage)
-		.use('/404', ErrorPage)
-		.use('/500', ErrorPage);
+		.use('/404', ErrorPage404)
+		.use('/500', ErrorPage500);
 
 	LoginApi.user().then((user) => {
 		store.set({user});
