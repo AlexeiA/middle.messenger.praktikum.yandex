@@ -20,9 +20,9 @@ export class UserApi {
 		});
 	}
 
-	static profilePassword(data: ProfilePasswordRequestData) {
+	static password(data: ProfilePasswordRequestData) {
 		return new Promise<void>((resolve, reject) => {
-			this.http.put(this.baseUri + '/user/profile/password', {credentials: true})
+			this.http.put(this.baseUri + '/user/password', {credentials: true, data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -62,9 +62,9 @@ type ProfileAvatarRequestData = { avatarData: Blob };
 export const updateUser = async (
 	dispatch: Dispatch<AppState>,
 	state: AppState,
-	data: User & {avatarData: Blob},
+	data: User & {avatarData: Blob} & {oldPassword: string, newPassword: string},
 ) => {
-	console.log('dispatching', this);debugger;
+	console.log('dispatching', this);
 	dispatch({ isLoading: true });
 
 	try {
@@ -75,11 +75,11 @@ export const updateUser = async (
 			user = await UserApi.profileAvatar({ avatarData: data.avatarData }) as User;
 			console.log(user);
 		}
-		//TODO if password changed
-		// await UserApi.profilePassword(data);
-
+		if (data.oldPassword && data.newPassword) {
+			const {oldPassword, newPassword} = data;
+			await UserApi.password({oldPassword, newPassword});
+		}
 		dispatch({ isLoading: false, user });
-		// router.go('/settings');
 	}
 	catch (error) {
 		console.error(error);
