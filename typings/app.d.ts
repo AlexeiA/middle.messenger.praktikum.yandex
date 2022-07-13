@@ -13,7 +13,8 @@ declare global {
 		loginFormError: string | null;
 		registerFormError: string | null;
 		user: User | null;
-		chats: []
+		chats: [],
+		currentToken: string | null;
 	};
 
 	export type User = {
