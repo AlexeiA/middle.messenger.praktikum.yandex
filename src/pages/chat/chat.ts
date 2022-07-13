@@ -4,6 +4,7 @@ import './chat.pcss';
 import {validateValue, ValidationRule} from "../../helpers/validator";
 import store from "../../core/Store";
 import {addUsersToChat, createChat, getToken, removeUsersFromChat} from "./chat_api";
+import router from "../../core/Router";
 
 type Message = {
 	content: string,
@@ -128,6 +129,9 @@ export class ChatPage extends Block {
 						alert('Строка идентификаторов имеет недопустимый формат');
 					}
 				}
+			},
+			gotoSettings: () => {
+				router.go('/settings');
 			}
 		}
 	}
@@ -146,7 +150,7 @@ export class ChatPage extends Block {
 					}}}
                 	{{{ChatsBlock
 					}}}
-                </div>
+				</div>
 				<div class="chat">
 					<div class="chat-header">
 						{{{Button
@@ -154,21 +158,25 @@ export class ChatPage extends Block {
 							onClick=addUsers
 							disabled=${chatId == null}
 						}}}
-                        {{{Button
+						{{{Button
 							text="Удалить собеседников"
 							onClick=removeUsers
 							disabled=${chatId == null}
-                        }}}
+						}}}
+						{{{Button
+							text="Мой профиль"
+							onClick=gotoSettings
+						}}}
 					</div>
 					<hr>
 					<div class="history">
 						{{#each messages}}
-                            <p class="message {{this.direction}}">{{this.content}}</p>
+							<p class="message {{this.direction}}">{{this.content}}</p>
 						{{/each}}
 					</div>
 					<hr>
 					<div class="message-new">
-                        {{{Input
+						{{{Input
 							label=""
 							value="${value}"
 							error="${error}"
