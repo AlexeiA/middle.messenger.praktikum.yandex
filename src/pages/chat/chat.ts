@@ -7,7 +7,7 @@ import {addUsersToChat, createChat, getToken, removeUsersFromChat} from "./chat_
 
 type Message = {
 	content: string,
-	direction: 'in' | 'out'
+	direction: 'in' | 'out' | 'system'
 }
 
 export class ChatPage extends Block {
@@ -16,47 +16,61 @@ export class ChatPage extends Block {
 		super();
 		store.on('changed', (prevState, nextState) => {
 			console.log('ChatPage changed', prevState, nextState);
-			const token = store.getState().currentToken;
-			console.log(token);
-			const userId = store.getState().user.id;
-			const chatId = 361;
-			if (this.socket == null && token) {
-				this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`);
-				this.socket.addEventListener('open', () => {
-					console.log('Соединение установлено');
-				});
-
-				this.socket.addEventListener('close', event => {
-					if (event.wasClean) {
-						console.log('Соединение закрыто чисто');
-					} else {
-						console.log('Обрыв соединения');
-					}
-
-					console.log(`Код: ${event.code} | Причина: ${event.reason}`);
-				});
-
-				this.socket.addEventListener('message', event => {
-					console.log('Получены данные', event.data);
-					const data = JSON.parse(event.data);
-					if (data.type == 'message') {
-						this.state.messages.push({content: data.content, direction: data.user_id == store.getState().user.id ? 'out' : 'in'});
-						this.setState({messages: this.state.messages});
-					}
-					else if (data.type == 'user connected') {
-						this.state.messages.push({content: `Пользователь ${data.content} подключился`, direction: 'in'});
-						this.setState({messages: this.state.messages});
-					}
-				});
-
-				this.socket.addEventListener('error', event => {
-					console.log('Ошибка', event.message);
-				});
-
-				//TODO ping-pong
+			if (prevState.currentChatId != nextState.currentChatId) {
+				store.dispatch(getToken, nextState.currentChatId);
+				return;
 			}
+			if (prevState.currentToken == nextState.currentToken) {
+				return;
+			}
+			const token = store.getState().currentToken;
+			const userId = store.getState().user.id;
+			const chatId = store.getState().currentChatId;
+			if (this.socket) {
+				this.socket.send(JSON.stringify({
+					content: `Я, пользователь ${userId}, отключился!`,
+					type: 'message',
+				}));
+				this.socket.close(1000, 'Смена чата');
+			}
+			this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`);
+			this.socket.addEventListener('open', () => {
+				console.log('Соединение установлено');
+				this.socket && this.socket.send(JSON.stringify({
+					content: `Я, пользователь ${userId}, подключился!`,
+					type: 'message',
+				}));
+			});
+
+			this.socket.addEventListener('close', event => {
+				if (event.wasClean) {
+					console.log('Соединение закрыто чисто');
+				} else {
+					console.log('Обрыв соединения');
+				}
+
+				console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+			});
+
+			this.socket.addEventListener('message', event => {
+				console.log('Получены данные', event.data);
+				const data = JSON.parse(event.data);
+				if (data.type == 'message') {
+					this.state.messages.push({content: data.content, direction: data.user_id == userId ? 'out' : 'in'});
+					this.setState({messages: this.state.messages});
+				}
+				else if (data.type == 'user connected') {
+					this.state.messages.push({content: `Пользователь ${data.content} подключился`, direction: 'system'});
+					this.setState({messages: this.state.messages});
+				}
+			});
+
+			this.socket.addEventListener('error', event => {
+				console.log('Ошибка', event.message);
+			});
+
+			//TODO ping-pong
 		});
-		store.dispatch(getToken, 361);
 	}
 
 	componentDidUpdate(oldProps: any, newProps: any): boolean {
@@ -96,13 +110,13 @@ export class ChatPage extends Block {
 			addUsers: () => {
 				const users = prompt('Идентификаторы пользователей для добавления', 'Например: 123,456');
 				if (users) {
-					store.dispatch(addUsersToChat, {users: JSON.parse(`[${users}]`), chatId: 361});
+					store.dispatch(addUsersToChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
 				}
 			},
 			removeUsers: () => {
 				const users = prompt('Идентификаторы пользователей для удаления', 'Например: 123,456');
 				if (users) {
-					store.dispatch(removeUsersFromChat, {users: JSON.parse(`[${users}]`), chatId: 361});
+					store.dispatch(removeUsersFromChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
 				}
 			}
 		}
@@ -111,6 +125,7 @@ export class ChatPage extends Block {
 	render() {
 		console.log('render', this);
 		const {value, error, messages} = this.state;
+		const chatId = store.getState().currentChatId;
 		// language=hbs
 		return `
 			{{#Layout name="Chat" }}
@@ -127,10 +142,12 @@ export class ChatPage extends Block {
 						{{{Button
 							text="Добавить собеседников"
 							onClick=addUsers
+							disabled=${chatId == null}
 						}}}
                         {{{Button
 							text="Удалить собеседников"
 							onClick=removeUsers
+							disabled=${chatId == null}
                         }}}
 					</div>
 					<hr>

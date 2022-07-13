@@ -96,7 +96,13 @@ export const getChats = async (
 	try {
 		let chats = await ChatApi.getChats();
 		console.log(chats);
-		dispatch({isLoading: false, chats});
+		let nextState = {
+			isLoading: false, chats
+		} as Partial<AppState>;
+		if (state.currentChatId == null && chats && chats.length > 0) {
+			nextState.currentChatId = chats[0].id;
+		}
+		dispatch(nextState);
 	}
 	catch (error) {
 		console.error(error);

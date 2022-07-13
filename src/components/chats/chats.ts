@@ -4,8 +4,11 @@ import './chats.pcss';
 import store from "../../core/Store";
 import {getChats} from "../../pages/chat/chat_api";
 
+//TODO sort chats by time
+
 export class ChatsBlock extends Block {
 	constructor() {
+		console.log('constructor ChatsBlock');
 		super({onClick: (event) => {
 			store.dispatch({currentChatId: parseInt(event.currentTarget.dataset.id)});
 		}});
