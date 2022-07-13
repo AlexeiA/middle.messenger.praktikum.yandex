@@ -23,7 +23,7 @@ export class ChatSummary extends Block {
 		// language=hbs
 		return `
 			<div class="chat-summary {{#if ${isCurrent}}}chat-summary_selected{{/if}}" data-id="{{id}}">
-				<div class="avatar"><img class="avatar chat-summary__avatar" src="{{#if img}}${process.env.API_ENDPOINT}/resources{{img}}{{else}}/static/chat_avatar_generic.png{{/if}}" alt="{{display_name}}"></div>
+				<div class="avatar"><img class="avatar chat-summary__avatar" src="{{#if img}}https://ya-praktikum.tech/api/v2/resources{{img}}{{else}}/static/chat_avatar_generic.png{{/if}}" alt="{{display_name}}"></div>
 				<div class="message-block">
 					<p class="display-name">{{display_name}}</p>
 					<p class="time">{{message_time}}</p>

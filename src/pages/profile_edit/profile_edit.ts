@@ -72,7 +72,7 @@ export class ProfileEditPage extends Block {
 
 	render() {
 		const {errors, values} = this.state;
-		const avatar = process.env.API_ENDPOINT + '/resources' + this.state.values.avatar;
+		const avatar = 'https://ya-praktikum.tech/api/v2' + '/resources' + this.state.values.avatar;
 		const isLoading = store.getState().isLoading;
 
 		// language=hbs

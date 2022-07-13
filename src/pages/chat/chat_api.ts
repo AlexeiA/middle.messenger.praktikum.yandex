@@ -4,7 +4,7 @@ import router from "../../core/Router";
 
 export class ChatApi {
 	private static http = new HTTPTransport();
-	private static baseUri = process.env.API_ENDPOINT;
+	private static baseUri = 'https://ya-praktikum.tech/api/v2';
 
 	static getChats() {
 		return new Promise<ChatsResponseData>((resolve, reject) => {

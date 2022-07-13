@@ -56,7 +56,6 @@ export default class HTTPTransport {
 
 	request = (url: string, options: IRequestOptions, timeout = 5000) => {
 		return new Promise<XMLHttpRequest>((resolve, reject) => {
-			console.log(resolve, reject);
 			let data = options.data;
 			let method = options.method;
 			if (method === 'GET' && data) {
