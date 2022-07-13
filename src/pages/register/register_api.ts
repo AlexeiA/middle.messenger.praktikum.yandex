@@ -8,7 +8,7 @@ class RegisterApi {
 
 	static register(data: RegisterRequestData) {
 		return new Promise<RegisterResponseData>((resolve, reject) => {
-			this.http.post(this.baseUri + '/auth/signup', { data, credentials: true })
+			this.http.post(this.baseUri + '/auth/signup', {data, credentials: true})
 				.then((xhr) => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -22,7 +22,7 @@ class RegisterApi {
 
 	static user() {
 		return new Promise<User>((resolve, reject) => {
-			this.http.get(this.baseUri + '/auth/user', {})
+			this.http.get(this.baseUri + '/auth/user', {credentials: true})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
