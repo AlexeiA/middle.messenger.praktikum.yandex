@@ -10,7 +10,7 @@ export class ProfileEditPage extends Block {
 		super();
 		store.on('changed', (prevState, nextState) => {
 			console.log('onstorechanged', prevState, nextState);
-			this.setState({values: {...nextState.user}});
+			this.setState({values: {...nextState.user, currentAvatar: nextState.user.avatar}});
 			this.render();
 		});
 	}
@@ -18,7 +18,7 @@ export class ProfileEditPage extends Block {
 	protected getStateFromProps() {
 		console.log('getStateFromProps', this);
 		this.state = {
-			values: store.getState().user,
+			values: { ...store.getState().user, currentAvatar: store.getState().user?.avatar },
 			errors: {
 				display_name: '',
 				first_name: '',
@@ -41,7 +41,8 @@ export class ProfileEditPage extends Block {
 					avatar: (this.refs.avatar.refs.input.element as HTMLInputElement).value,
 					login: (this.refs.login.refs.input.element as HTMLInputElement).value,
 					oldPassword: (this.refs.oldPassword.refs.input.element as HTMLInputElement).value,
-					newPassword: (this.refs.newPassword.refs.input.element as HTMLInputElement).value
+					newPassword: (this.refs.newPassword.refs.input.element as HTMLInputElement).value,
+					currentAvatar: this.state.values.currentAvatar
 				};
 				console.log(userData);
 				const nextState = {
@@ -72,9 +73,9 @@ export class ProfileEditPage extends Block {
 
 	render() {
 		const {errors, values} = this.state;
-		const avatar = 'https://ya-praktikum.tech/api/v2' + '/resources' + this.state.values.avatar;
+		const avatar = 'https://ya-praktikum.tech/api/v2' + '/resources' + this.state.values.currentAvatar;
 		const isLoading = store.getState().isLoading;
-
+		console.log(`avatar=${avatar}`);
 		// language=hbs
 		return `
 			{{#Layout name="ProfileEdit" }}

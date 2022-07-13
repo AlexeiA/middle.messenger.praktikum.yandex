@@ -21,11 +21,14 @@ export class UserApi {
 	}
 
 	static password(data: ProfilePasswordRequestData) {
-		return new Promise<void>((resolve, reject) => {
+		return new Promise<void | {reason: string}>((resolve, reject) => {
 			this.http.put(this.baseUri + '/user/password', {credentials: true, data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
+					}
+					else if (xhr.responseText) {
+						reject(JSON.parse(xhr.responseText));
 					}
 					else {
 						reject();
@@ -70,10 +73,11 @@ export const updateUser = async (
 	try {
 		let user = await UserApi.profile(data) as User;
 		console.log(user);
-
+		dispatch({ user });
 		if (data.avatarData) {
 			user = await UserApi.profileAvatar({ avatarData: data.avatarData }) as User;
 			console.log(user);
+			dispatch({ user });
 		}
 		if (data.oldPassword && data.newPassword) {
 			const {oldPassword, newPassword} = data;
