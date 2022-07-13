@@ -56,7 +56,7 @@ export class ChatPage extends Block {
 				console.log('Получены данные', event.data);
 				const data = JSON.parse(event.data);
 				if (data.type == 'message') {
-					this.state.messages.push({content: data.content, direction: data.user_id == userId ? 'out' : 'in'});
+					this.state.messages.push({content: sanitize(data.content), direction: data.user_id == userId ? 'out' : 'in'});
 					this.setState({messages: this.state.messages});
 				}
 				else if (data.type == 'user connected') {
@@ -110,13 +110,23 @@ export class ChatPage extends Block {
 			addUsers: () => {
 				const users = prompt('Идентификаторы пользователей для добавления', 'Например: 123,456');
 				if (users) {
-					store.dispatch(addUsersToChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
+					if (/[\d,]+/.test(users)) {
+						store.dispatch(addUsersToChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
+					}
+					else {
+						alert('Строка идентификаторов имеет недопустимый формат');
+					}
 				}
 			},
 			removeUsers: () => {
 				const users = prompt('Идентификаторы пользователей для удаления', 'Например: 123,456');
 				if (users) {
-					store.dispatch(removeUsersFromChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
+					if (/[\d,]+/.test(users)) {
+						store.dispatch(removeUsersFromChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
+					}
+					else {
+						alert('Строка идентификаторов имеет недопустимый формат');
+					}
 				}
 			}
 		}
@@ -177,4 +187,8 @@ export class ChatPage extends Block {
 			{{/Layout}}
 		`;
 	}
+}
+
+function sanitize(content: string) {
+	return content.replace(/<(\/?)script>/ig, '');
 }
