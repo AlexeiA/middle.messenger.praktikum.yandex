@@ -6,7 +6,9 @@ import {getChats} from "../../pages/chat/chat_api";
 
 export class ChatsBlock extends Block {
 	constructor() {
-		super();
+		super({onClick: (event) => {
+			store.dispatch({currentChatId: parseInt(event.currentTarget.dataset.id)});
+		}});
 		store.on('changed', (prevState, nextState) => {
 			this.setState({chats: store.getState().chats});
 		});
@@ -27,10 +29,13 @@ export class ChatsBlock extends Block {
 				{{#if chats}}
                     {{#each chats}}
                         {{{ChatSummary
+							id = this.id
 							display_name = this.title
-							img = this.avatar
+							img = this.last_message.user.avatar
 							message = this.last_message.content
 							message_time = this.last_message.time
+							unread_count = this.unread_count
+							onClick = @root.onClick
                         }}}
                     {{/each}}
 				{{else}}

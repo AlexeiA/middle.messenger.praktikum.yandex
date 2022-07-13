@@ -51,4 +51,5 @@ export default new Store<AppState>({
 	user: null,
 	chats: [],
 	currentToken: null,
+	currentChatId: null,
 });

@@ -52,9 +52,16 @@ export class ChatPage extends Block {
 				this.socket.addEventListener('error', event => {
 					console.log('Ошибка', event.message);
 				});
+
+				//TODO ping-pong
 			}
 		});
 		store.dispatch(getToken, 361);
+	}
+
+	componentDidUpdate(oldProps: any, newProps: any): boolean {
+		console.log('componentDidUpdate', this, oldProps, newProps);
+		return super.componentDidUpdate(oldProps, newProps);
 	}
 
 	socket: Nullable<WebSocket> = null;

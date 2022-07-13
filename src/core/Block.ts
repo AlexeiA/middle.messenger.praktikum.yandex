@@ -108,7 +108,7 @@ export default abstract class Block<P = any> {
 		return this._element;
 	}
 
-	_render() {
+	private _render() {
 		console.log('_render()', this);
 
 		const fragment = this._compile();

@@ -22,7 +22,7 @@ export class InputBase extends Block {
 	}
 
 	protected render(): string {
-		console.log('_render()', this);
+		console.log('render()', this);
 		// language=hbs
 		return `
 			<input class="input" type="{{type}}" placeholder="{{placeholder}}" value="{{value}}">

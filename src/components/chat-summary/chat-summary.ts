@@ -1,31 +1,34 @@
 import Block from '../../core/Block';
 
 import './chat-summary.pcss';
+import store from "../../core/Store";
 
 interface ChatSummaryProps {
+	id: number;
 	display_name: string;
 	img: string;
 	message: string;
 	time: string;//TODO time class
+	unread_count: number;
+	onClick: () => void;
 }
 
 export class ChatSummary extends Block {
-	constructor(props: ChatSummaryProps) {
-		super({...props, events: {click: () => {
-			this.element?.classList.add('chat-summary_selected');
-		}}});
+	constructor({onClick = () => {console.log('click')}, ...props}: ChatSummaryProps) {
+		super({...props, events: {click: onClick }});
 	}
 
 	protected render(): string {
+		const isCurrent = this.props.id == store.getState().currentChatId;
 		// language=hbs
 		return `
-			<div class="chat-summary">
-				<div class="avatar"><img src="{{img}}" alt="{{display_name}}"></div>
+			<div class="chat-summary {{#if ${isCurrent}}}chat-summary_selected{{/if}}" data-id="{{id}}">
+				<div class="avatar"><img class="avatar chat-summary__avatar" src="{{#if img}}${process.env.API_ENDPOINT}/resources{{img}}{{else}}/static/chat_avatar_generic.png{{/if}}" alt="{{display_name}}"></div>
 				<div class="message-block">
 					<p class="display-name">{{display_name}}</p>
 					<p class="time">{{message_time}}</p>
 					<p class="message">{{message}}</p>
-					<div class="unread-count">3</div>
+					{{#if unread_count}}<div class="unread-count">{{unread_count}}</div>{{/if}}
 				</div>
 			</div>
 		`
