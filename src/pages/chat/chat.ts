@@ -198,5 +198,5 @@ export class ChatPage extends Block {
 }
 
 function sanitize(content: string) {
-	return content.replace(/<(\/?)script>/ig, '');
+	return content.substring(0, 10_000).replace(/<(\/?)script>/ig, '');
 }
