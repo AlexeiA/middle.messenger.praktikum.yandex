@@ -1,4 +1,5 @@
-import {renderDOM, registerComponent} from './core';
+import { registerComponent } from './core';
+import router from './core/Router';
 
 import './app.pcss';
 
@@ -6,10 +7,17 @@ import Button from './components/button';
 import Link from './components/link';
 import Input from './components/input';
 import Layout from './components/layout';
-import LinksPage from "./pages/links";
 import InputBase from "./components/input-base";
 import ErrorComponent from "./components/error";
 import ChatSummary from "./components/chat-summary";
+import LoginPage from "./pages/login";
+import RegisterPage from "./pages/register";
+import ChatPage from "./pages/chat";
+import ChatsBlock from "./components/chats";
+import ProfileEditPage from "./pages/profile_edit";
+import {ErrorPage404, ErrorPage500} from "./pages/error";
+import {LoginApi} from "./pages/login/login_api";
+import store from "./core/Store";
 
 registerComponent(Button);
 registerComponent(Link);
@@ -18,18 +26,27 @@ registerComponent(Layout);
 registerComponent(InputBase);
 registerComponent(ErrorComponent);
 registerComponent(ChatSummary);
+registerComponent(ChatsBlock);
 
 document.addEventListener("DOMContentLoaded", () => {
-	const App = new LinksPage({
-		links: [
-			{to: "#LoginPage", text: "Авторизация"},
-			{to: "#RegisterPage", text: "Регистрация"},
-			{to: "#ChatPage", text: "Список чатов и лента переписки"},
-			{to: "#ProfileEditPage", text: "Настройки пользователя"},
-			{to: "#404", text: "Страница 404"},
-			{to: "#500", text: "Страница 5**"},
-		]
-	});
+	router
+		.use('/', LoginPage)
+		.use('/sign-up', RegisterPage)
+		.use('/messenger', ChatPage)
+		.use('/settings', ProfileEditPage)
+		.use('/404', ErrorPage404)
+		.use('/500', ErrorPage500);
 
-	renderDOM(App);
+	LoginApi.user().then((user) => {
+		store.set({user});
+		if (window.location.pathname === '/') {
+			router.start('/messenger');
+		}
+		else {
+			router.start();
+		}
+	}, (reason) => {
+		console.warn(reason);
+		router.start();
+	});
 });

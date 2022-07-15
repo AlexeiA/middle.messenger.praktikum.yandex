@@ -2,6 +2,8 @@ import Block from '../../core/Block';
 
 import './login.pcss';
 import {validateValue, ValidationRule} from "../../helpers/validator";
+import {login} from "./login_api";
+import store from "../../core/Store";
 
 export class LoginPage extends Block {
 	protected getStateFromProps() {
@@ -28,12 +30,18 @@ export class LoginPage extends Block {
 					values: {...loginData},
 				};
 				this.setState(nextState);
+
+				const hasError = Object.values(nextState.errors).some(val => val !== '');
+				if (!hasError) {
+					store.dispatch(login, loginData);
+				}
 			}
 		}
 	}
 
 	render() {
 		const {errors, values} = this.state;
+		const isLoading = store.getState().isLoading;
 
 		// language=hbs
 		return `
@@ -66,8 +74,10 @@ export class LoginPage extends Block {
 						{{{Button
 							text="Войти"
 							onClick=onLogin
+							disabled=${isLoading}
 						}}}
 					</form>
+                    {{{Link text="Впервые?" to="/sign-up"}}}
 				</main>
 			{{/Layout}}
 		`;

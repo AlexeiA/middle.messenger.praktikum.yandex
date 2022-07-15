@@ -18,11 +18,23 @@ export class ErrorPage extends Block {
 			{{#Layout name="Error" }}
 				<main class="error-page__main">
 					<h1>{{h1}}</h1>
-					<p class="center">{{h2}}</p>
+					<h2 class="center">{{h2}}</h2>
 					<div class="error-page__whitespace-div"></div>
 					<a href="/">Назад к чатам</a>
 				</main>
 			{{/Layout}}
 		`;
+	}
+}
+
+export class ErrorPage404 extends ErrorPage {
+	constructor() {
+		super({h1: '404', h2: 'Не туда попали'});
+	}
+}
+
+export class ErrorPage500 extends ErrorPage {
+	constructor() {
+		super({h1: '500', h2: 'Уже фиксим'});
 	}
 }

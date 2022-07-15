@@ -52,27 +52,32 @@
 
 .history {
 	flex-grow: 1;
-
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
 	padding: 10px;
+  min-width: 0;
 
 	.message {
 		padding: 10px;
 		border-radius: 10px;
 	}
 
-	.message.from {
+	.message.in {
 		background-color: lightgreen;
 		border-top-left-radius: 0;
 		align-self: flex-start;
 	}
 
-	.message.to {
+	.message.out {
 		background-color: lightblue;
 		border-bottom-right-radius: 0;
 		align-self: flex-end;
 	}
+
+  .message.system {
+    align-self: center;
+    background-color: lightgray;
+  }
 }
 

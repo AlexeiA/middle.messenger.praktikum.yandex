@@ -8,7 +8,7 @@ interface BlockMeta<P = any> {
 
 type Events = Values<typeof Block.EVENTS>;
 
-export default class Block<P = any> {
+export default abstract class Block<P = any> {
 	static EVENTS = {
 		INIT: 'init',
 		FLOW_CDM: 'flow:component-did-mount',
@@ -67,14 +67,16 @@ export default class Block<P = any> {
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props);
 	}
 
-	_componentDidMount(props: P) {
+	private _componentDidMount(props: P) {
+		console.log('_componentDidMount', this, props);
 		this.componentDidMount(props);
 	}
 
 	componentDidMount(props: P) {
 	}
 
-	_componentDidUpdate(oldProps: P, newProps: P) {
+	private _componentDidUpdate(oldProps: P, newProps: P) {
+		console.log('_componentDidUpdate', oldProps, newProps);
 		const response = this.componentDidUpdate(oldProps, newProps);
 		if (!response) {
 			return;
@@ -106,7 +108,7 @@ export default class Block<P = any> {
 		return this._element;
 	}
 
-	_render() {
+	private _render() {
 		console.log('_render()', this);
 
 		const fragment = this._compile();

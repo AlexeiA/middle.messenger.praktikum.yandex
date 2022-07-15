@@ -6,7 +6,7 @@
     "test": "node test/check_routing.js",
     "serve": "parcel serve",
     "start": "node server.js",
-    "build": "parcel build src/index.html src/static/avatar_generic.png --no-scope-hoist --no-optimize"
+    "build": "parcel build src/index.html src/static/* --no-scope-hoist --no-optimize"
   },
   "alias": {
     "nanoid": "./node_modules/nanoid/index.browser",
@@ -32,7 +32,9 @@
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "autoprefixer": "^10.4.7",
+    "chai": "^4.3.6",
     "eslint": "^8.16.0",
+    "mocha": "^10.0.0",
     "parcel": "^2.5.0",
     "postcss": "^8.4.14",
     "postcss-modules": "^4.3.1",
