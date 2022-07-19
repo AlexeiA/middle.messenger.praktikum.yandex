@@ -1,15 +1,26 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
 	entry: './src/index.ts',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'project-name.bundle.js'
+		filename: 'app.bundle.js'
 	},
 	resolve: {
-		extensions: ['.ts', '.js', '.json']
+		extensions: ['.ts', '.js', '.json'],
+		alias: {'handlebars' : 'handlebars/dist/handlebars.js'}
 	},
+	plugins: [new HtmlWebpackPlugin({
+		template: "./src/index.html",
+	})],
+	devServer: {
+		compress: false,
+		port: 1234,
+		hot: true
+	},
+	target: 'web',
 	module: {
 		rules: [
 			{
@@ -41,7 +52,11 @@ module.exports = {
 						loader: 'postcss-loader'
 					}
 				]
-			}
+			},
+			{
+				test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+				type: 'asset/resource',
+			},
 		]
 	}
 };
