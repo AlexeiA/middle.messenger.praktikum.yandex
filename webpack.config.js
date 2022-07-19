@@ -18,7 +18,8 @@ module.exports = {
 	devServer: {
 		compress: false,
 		port: 1234,
-		hot: true
+		hot: true,
+		historyApiFallback: true
 	},
 	target: 'web',
 	module: {
