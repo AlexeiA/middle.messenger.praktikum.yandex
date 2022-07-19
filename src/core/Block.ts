@@ -17,6 +17,7 @@ export default abstract class Block<P = any> {
 	} as const;
 
 	public id = nanoid(6);
+	// @ts-ignore
 	private readonly _meta: BlockMeta;
 
 	protected _element: Nullable<HTMLElement> = null;
@@ -58,6 +59,7 @@ export default abstract class Block<P = any> {
 		this._element = this._createDocumentElement('div');
 	}
 
+	// @ts-ignore
 	protected getStateFromProps(props: any): void {
 		this.state = {};
 	}
@@ -72,6 +74,7 @@ export default abstract class Block<P = any> {
 		this.componentDidMount(props);
 	}
 
+	// @ts-ignore
 	componentDidMount(props: P) {
 	}
 
@@ -84,6 +87,7 @@ export default abstract class Block<P = any> {
 		this._render();
 	}
 
+	// @ts-ignore
 	componentDidUpdate(oldProps: P, newProps: P) {
 		return true;
 	}

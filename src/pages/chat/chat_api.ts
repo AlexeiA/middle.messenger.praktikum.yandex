@@ -1,6 +1,5 @@
 import HTTPTransport from "../../core/HTTPTransport";
 import type { Dispatch } from '../../core/Store';
-import router from "../../core/Router";
 
 export class ChatApi {
 	private static http = new HTTPTransport();
@@ -77,24 +76,23 @@ export class ChatApi {
 	}
 }
 
-type ChatsResponseData = ChatData[] | { reason: string };
+type ChatsResponseData = ChatData[];
 
 type CreateChatRequestData = { title: string };
 
 type ChatUsersRequestData = { users: number[], chatId: number };
 
-type ChatTokenResponseData = { token: string } | { reason: string };
+type ChatTokenResponseData = { token: string };
 
 export const getChats = async (
 	dispatch: Dispatch<AppState>,
 	state: AppState,
-	data: null,
 ) => {
 	console.log('dispatching', this);
 	dispatch({ isLoading: true });
 
 	try {
-		let chats = await ChatApi.getChats();
+		let chats = await ChatApi.getChats() as ChatsResponseData;
 		console.log(chats);
 		let nextState = {
 			isLoading: false, chats
@@ -107,6 +105,7 @@ export const getChats = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 
 	}
@@ -114,6 +113,7 @@ export const getChats = async (
 
 export const createChat = async (
 	dispatch: Dispatch<AppState>,
+	// @ts-ignore
 	state: AppState,
 	data: CreateChatRequestData,
 ) => {
@@ -128,12 +128,14 @@ export const createChat = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 	}
 };
 
 export const addUsersToChat = async (
 	dispatch: Dispatch<AppState>,
+	// @ts-ignore
 	state: AppState,
 	data: ChatUsersRequestData,
 ) => {
@@ -147,12 +149,14 @@ export const addUsersToChat = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 	}
 };
 
 export const removeUsersFromChat = async (
 	dispatch: Dispatch<AppState>,
+	// @ts-ignore
 	state: AppState,
 	data: ChatUsersRequestData,
 ) => {
@@ -166,12 +170,14 @@ export const removeUsersFromChat = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 	}
 };
 
 export const getToken = async (
 	dispatch: Dispatch<AppState>,
+	// @ts-ignore
 	state: AppState,
 	data: number,
 ) => {
@@ -185,6 +191,7 @@ export const getToken = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 	}
 };

@@ -6,7 +6,7 @@ function isEqual(lhs: any, rhs: any) {
 }
 
 export class Route {
-	constructor(pathname: string, view: typeof Block, props?: {}) {
+	constructor(pathname: string, view: new() => Block, props?: {}) {
 		this._pathname = pathname;
 		this._blockClass = view;
 		this._block = null;
@@ -56,7 +56,7 @@ class Router {
 	private _currentRoute: Nullable<Route> = null;
 	private _rootQuery: string;
 
-	use(pathname: string, block: typeof Block) {
+	use(pathname: string, block: new() => Block) {
 		const route = new Route(pathname, block, {rootQuery: this._rootQuery});
 		this.routes.push(route);
 		return this;
@@ -89,7 +89,7 @@ class Router {
 			if (pathname !== '/404') {
 				route = this.getRoute('/404');
 			}
-			else {
+			if (!route) {
 				throw new Error('pathname is not registered');
 			}
 		}
@@ -99,7 +99,7 @@ class Router {
 		}
 
 		this._currentRoute = route;
-		route.render();
+		this._currentRoute.render();
 	}
 
 	go(pathname: string) {
@@ -116,7 +116,7 @@ class Router {
 	}
 
 	getRoute(pathname: string) {
-		return this.routes.find(route => route.match(pathname));
+		return this.routes.find(route => route.match(pathname)) || null;
 	}
 }
 

@@ -59,7 +59,9 @@ export class ProfileEditPage extends Block {
 					},
 					values: {...userData},
 				};
-				const avatarData = nextState.values.avatar !== this.state.values.avatar ? document.querySelector('main form input[type=file]').files[0] : null;
+				const fileInput = document.querySelector('main form input[type=file]') as HTMLInputElement;
+				// @ts-ignore
+				const avatarData = nextState.values.avatar !== this.state.values.avatar ? fileInput.files[0] : null;
 				this.setState(nextState);
 
 				const hasError = Object.values(nextState.errors).some(val => val !== '');

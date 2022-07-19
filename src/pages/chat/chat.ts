@@ -6,11 +6,6 @@ import store from "../../core/Store";
 import {addUsersToChat, createChat, getToken, removeUsersFromChat} from "./chat_api";
 import router from "../../core/Router";
 
-type Message = {
-	content: string,
-	direction: 'in' | 'out' | 'system'
-}
-
 export class ChatPage extends Block {
 	constructor() {
 		console.log('constructor', 'ChatPage');
@@ -25,7 +20,7 @@ export class ChatPage extends Block {
 				return;
 			}
 			const token = store.getState().currentToken;
-			const userId = store.getState().user.id;
+			const userId = store.getState().user?.id;
 			const chatId = store.getState().currentChatId;
 			if (this.socket) {
 				this.socket.send(JSON.stringify({
@@ -67,6 +62,7 @@ export class ChatPage extends Block {
 			});
 
 			this.socket.addEventListener('error', event => {
+				// @ts-ignore
 				console.log('Ошибка', event.message);
 			});
 
@@ -138,7 +134,7 @@ export class ChatPage extends Block {
 
 	render() {
 		console.log('render', this);
-		const {value, error, messages} = this.state;
+		const {value, error} = this.state;
 		const chatId = store.getState().currentChatId;
 		// language=hbs
 		return `

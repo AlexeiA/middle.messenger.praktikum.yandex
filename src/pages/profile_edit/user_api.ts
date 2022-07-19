@@ -1,6 +1,5 @@
 import HTTPTransport from "../../core/HTTPTransport";
 import type { Dispatch } from '../../core/Store';
-import router from "../../core/Router";
 
 export class UserApi {
 	private static http = new HTTPTransport();
@@ -64,6 +63,7 @@ type ProfileAvatarRequestData = { avatarData: Blob };
 
 export const updateUser = async (
 	dispatch: Dispatch<AppState>,
+	// @ts-ignore
 	state: AppState,
 	data: User & {avatarData: Blob} & {oldPassword: string, newPassword: string},
 ) => {
@@ -87,6 +87,7 @@ export const updateUser = async (
 	}
 	catch (error) {
 		console.error(error);
-		alert(`Ошибка: ${error?.reason}`);
+		// @ts-ignore
+		alert(`Ошибка: ${error.reason}`);
 	}
 };
