@@ -3,12 +3,12 @@ import type { Dispatch } from '../../core/Store';
 import router from "../../core/Router";
 
 export class LoginApi {
-	private static http = new HTTPTransport();
+	private static http = new HTTPTransport({credentials: true});
 	private static baseUri = 'https://ya-praktikum.tech/api/v2';
 
 	static login(data: LoginRequestData) {
 		return new Promise<LoginResponseData>((resolve, reject) => {
-			this.http.post(this.baseUri + '/auth/signin', { data, credentials: true })
+			this.http.post(this.baseUri + '/auth/signin', {data})
 				.then((xhr) => {
 					if (xhr.status === 200) {
 						resolve();
@@ -22,7 +22,7 @@ export class LoginApi {
 
 	static user() {
 		return new Promise<User>((resolve, reject) => {
-			this.http.get(this.baseUri + '/auth/user', {credentials: true})
+			this.http.get(this.baseUri + '/auth/user')
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -36,7 +36,7 @@ export class LoginApi {
 
 	static logout() {
 		return new Promise<void>((resolve, reject) => {
-			this.http.post(this.baseUri + '/auth/logout', {credentials: true})
+			this.http.post(this.baseUri + '/auth/logout')
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();

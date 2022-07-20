@@ -41,24 +41,32 @@ interface IRequestOptions {
 type RequestOptions = Omit<IRequestOptions, 'method'>;
 
 export default class HTTPTransport {
-	get = (url: string, options: RequestOptions) => {
+	constructor(options?: RequestOptions) {
+		this.options = options || {};
+	}
+
+	options: RequestOptions;
+
+	get = (url: string, options: RequestOptions = {}) => {
 		const {data} = options;
 		if (data) {
 			url += queryStringify(data);
 		}
 		return this.request(url, {...options, method: METHODS.GET}, options.timeout);
 	};
-	put = (url: string, options: RequestOptions) => {
+	put = (url: string, options: RequestOptions = {}) => {
 		return this.request(url, {...options, method: METHODS.PUT}, options.timeout);
 	};
-	post = (url: string, options: RequestOptions) => {
+	post = (url: string, options: RequestOptions = {}) => {
 		return this.request(url, {...options, method: METHODS.POST}, options.timeout);
 	};
-	delete = (url: string, options: RequestOptions) => {
+	delete = (url: string, options: RequestOptions = {}) => {
 		return this.request(url, {...options, method: METHODS.DELETE}, options.timeout);
 	};
 
-	request = (url: string, options: IRequestOptions, timeout = 5000) => {
+	request = (url: string, requestOptions: IRequestOptions, timeout = 5000) => {
+		const options = {...this.options, ...requestOptions};
+
 		return new Promise<XMLHttpRequest>((resolve, reject) => {
 			const data = options.data;
 			const method = options.method;

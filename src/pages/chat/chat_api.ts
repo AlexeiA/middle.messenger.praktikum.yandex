@@ -2,12 +2,12 @@ import HTTPTransport from "../../core/HTTPTransport";
 import type { Dispatch } from '../../core/Store';
 
 export class ChatApi {
-	private static http = new HTTPTransport();
+	private static http = new HTTPTransport({credentials: true});
 	private static baseUri = 'https://ya-praktikum.tech/api/v2';
 
 	static getChats() {
 		return new Promise<ChatsResponseData>((resolve, reject) => {
-			this.http.get(this.baseUri + '/chats', { credentials: true })
+			this.http.get(this.baseUri + '/chats')
 				.then((xhr) => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -21,7 +21,7 @@ export class ChatApi {
 
 	static createChat(data: CreateChatRequestData) {
 		return new Promise<void>((resolve, reject) => {
-			this.http.post(this.baseUri + '/chats', {credentials: true, data})
+			this.http.post(this.baseUri + '/chats', {data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -35,7 +35,7 @@ export class ChatApi {
 
 	static addUsers(data: ChatUsersRequestData) {
 		return new Promise<void>((resolve, reject) => {
-			this.http.put(this.baseUri + '/chats/users', {credentials: true, data})
+			this.http.put(this.baseUri + '/chats/users', {data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -49,7 +49,7 @@ export class ChatApi {
 
 	static removeUsers(data: ChatUsersRequestData) {
 		return new Promise<void>((resolve, reject) => {
-			this.http.delete(this.baseUri + '/chats/users', {credentials: true, data})
+			this.http.delete(this.baseUri + '/chats/users', {data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -63,7 +63,7 @@ export class ChatApi {
 
 	static getToken(chatId: number) {
 		return new Promise<ChatTokenResponseData>((resolve, reject) => {
-			this.http.post(`${this.baseUri}/chats/token/${chatId}`, {credentials: true})
+			this.http.post(`${this.baseUri}/chats/token/${chatId}`)
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
