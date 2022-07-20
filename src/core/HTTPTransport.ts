@@ -42,6 +42,10 @@ type RequestOptions = Omit<IRequestOptions, 'method'>;
 
 export default class HTTPTransport {
 	get = (url: string, options: RequestOptions) => {
+		const {data} = options;
+		if (data) {
+			url += queryStringify(data);
+		}
 		return this.request(url, {...options, method: METHODS.GET}, options.timeout);
 	};
 	put = (url: string, options: RequestOptions) => {
@@ -56,13 +60,10 @@ export default class HTTPTransport {
 
 	request = (url: string, options: IRequestOptions, timeout = 5000) => {
 		return new Promise<XMLHttpRequest>((resolve, reject) => {
-			let data = options.data;
-			let method = options.method;
-			if (method === 'GET' && data) {
-				url += queryStringify(data);
-			}
-
+			const data = options.data;
+			const method = options.method;
 			const xhr = new XMLHttpRequest();
+
 			if (options.credentials) {
 				xhr.withCredentials = true;
 			}
