@@ -3,10 +3,10 @@
   "version": "0.4.0",
   "description": "---",
   "scripts": {
-    "test": "node test/check_routing.js",
-    "serve": "parcel serve",
+    "test": "mocha",
+    "serve": "webpack serve",
     "start": "node server.js",
-    "build": "parcel build src/index.html src/static/* --no-scope-hoist --no-optimize"
+    "build": "webpack"
   },
   "alias": {
     "nanoid": "./node_modules/nanoid/index.browser",
