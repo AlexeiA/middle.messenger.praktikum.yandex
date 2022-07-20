@@ -83,6 +83,11 @@ export class ChatPage extends Block {
 
 	socket: Nullable<WebSocket> = null;
 
+	private static validateUsersPrompt(users: string): boolean {
+		const usersRegExp = /[\d,]+/;
+		return usersRegExp.test(users);
+	}
+
 	protected getStateFromProps() {
 		this.state = {
 			value: '',
@@ -113,7 +118,7 @@ export class ChatPage extends Block {
 			addUsers: () => {
 				const users = prompt('Идентификаторы пользователей для добавления', 'Например: 123,456');
 				if (users) {
-					if (/[\d,]+/.test(users)) {
+					if (ChatPage.validateUsersPrompt(users)) {
 						store.dispatch(addUsersToChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
 					}
 					else {
@@ -124,7 +129,7 @@ export class ChatPage extends Block {
 			removeUsers: () => {
 				const users = prompt('Идентификаторы пользователей для удаления', 'Например: 123,456');
 				if (users) {
-					if (/[\d,]+/.test(users)) {
+					if (ChatPage.validateUsersPrompt(users)) {
 						store.dispatch(removeUsersFromChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
 					}
 					else {
