@@ -16,7 +16,7 @@ export class ChatPage extends Block {
 				store.dispatch(getToken, nextState.currentChatId);
 				return;
 			}
-			if (prevState.currentToken == nextState.currentToken) {
+			if (prevState.currentToken === nextState.currentToken) {
 				return;
 			}
 			const token = store.getState().currentToken;
@@ -51,14 +51,14 @@ export class ChatPage extends Block {
 			this.socket.addEventListener('message', event => {
 				console.log('Получены данные', event.data);
 				const data = JSON.parse(event.data);
-				if (data.type == 'message') {
+				if (data.type === 'message') {
 					this.state.messages.push({
 						content: sanitize(data.content),
-						direction: data.user_id == userId ? 'out' : 'in'
+						direction: data.user_id === userId ? 'out' : 'in'
 					});
 					this.setState({messages: this.state.messages});
 				}
-				else if (data.type == 'user connected') {
+				else if (data.type === 'user connected') {
 					this.state.messages.push({
 						content: `Пользователь ${data.content} подключился`,
 						direction: 'system'
