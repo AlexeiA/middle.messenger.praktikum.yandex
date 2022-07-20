@@ -1,10 +1,6 @@
 import { render } from "./renderDOM";
 import Block from "./Block";
 
-function isEqual(lhs: any, rhs: any) {
-	return lhs === rhs;
-}
-
 export class Route {
 	constructor(pathname: string, view: new() => Block, props?: {}) {
 		this._pathname = pathname;
@@ -32,7 +28,7 @@ export class Route {
 	}
 
 	match(pathname: string) {
-		return isEqual(pathname, this._pathname);
+		return pathname === this._pathname;
 	}
 
 	render() {
