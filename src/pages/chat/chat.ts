@@ -2,8 +2,9 @@ import Block from '../../core/Block';
 
 import './chat.pcss';
 import {validateValue, ValidationRule} from "../../helpers/validator";
-import store from "../../core/Store";
+import MySocket from "../../core/MySocket";
 import router from "../../core/Router";
+import store from "../../core/Store";
 import {addUsersToChat, createChat, getToken, removeUsersFromChat} from "./chat_api";
 
 export class ChatPage extends Block {

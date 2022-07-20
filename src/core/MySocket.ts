@@ -1,4 +1,4 @@
-class MySocket extends WebSocket {
+export default class MySocket extends WebSocket {
 	constructor(url: string) {
 		super(url);
 	}
