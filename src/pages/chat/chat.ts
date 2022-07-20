@@ -52,11 +52,17 @@ export class ChatPage extends Block {
 				console.log('Получены данные', event.data);
 				const data = JSON.parse(event.data);
 				if (data.type == 'message') {
-					this.state.messages.push({content: sanitize(data.content), direction: data.user_id == userId ? 'out' : 'in'});
+					this.state.messages.push({
+						content: sanitize(data.content),
+						direction: data.user_id == userId ? 'out' : 'in'
+					});
 					this.setState({messages: this.state.messages});
 				}
 				else if (data.type == 'user connected') {
-					this.state.messages.push({content: `Пользователь ${data.content} подключился`, direction: 'system'});
+					this.state.messages.push({
+						content: `Пользователь ${data.content} подключился`,
+						direction: 'system'
+					});
 					this.setState({messages: this.state.messages});
 				}
 			});
