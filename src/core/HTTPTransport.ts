@@ -1,3 +1,5 @@
+import toArray from "./utils/toArray";
+
 export enum METHODS {
 	GET = 'GET',
 	PUT = 'PUT',
@@ -12,22 +14,6 @@ export enum METHODS {
  */
 function queryStringify(data: {}) {
 	return '?' + toArray(data).join('&');
-}
-
-function toArray(obj: any) {
-	let arr: Array<string> = [];
-	Object.entries(obj).forEach(([k, v]) => {
-		if (Array.isArray(v)) {
-			arr.push(k + '=' + v.join(','));
-		}
-		else if (v && typeof v === 'object') {
-			arr.push(k + '=' + v.toString());
-		}
-		else {
-			arr.push(`${k}=${v}`);
-		}
-	});
-	return arr;
 }
 
 interface IRequestOptions {
