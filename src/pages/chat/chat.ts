@@ -3,8 +3,8 @@ import Block from '../../core/Block';
 import './chat.pcss';
 import {validateValue, ValidationRule} from "../../helpers/validator";
 import store from "../../core/Store";
-import {addUsersToChat, createChat, getToken, removeUsersFromChat} from "./chat_api";
 import router from "../../core/Router";
+import {addUsersToChat, createChat, getToken, removeUsersFromChat} from "./chat_api";
 
 export class ChatPage extends Block {
 	constructor() {
@@ -23,22 +23,22 @@ export class ChatPage extends Block {
 			const userId = store.getState().user?.id;
 			const chatId = store.getState().currentChatId;
 			if (this.socket) {
-				this.socket.send(JSON.stringify({
+				this.socket.send({
 					content: `Я, пользователь ${userId}, отключился!`,
 					type: 'message',
-				}));
+				});
 				this.socket.close(1000, 'Смена чата');
 			}
-			this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`);
-			this.socket.addEventListener('open', () => {
+			this.socket = new MySocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`);
+			this.socket.on('open', () => {
 				console.log('Соединение установлено');
-				this.socket && this.socket.send(JSON.stringify({
+				this.socket && this.socket.send({
 					content: `Я, пользователь ${userId}, подключился!`,
 					type: 'message',
-				}));
+				});
 			});
 
-			this.socket.addEventListener('close', event => {
+			this.socket.on('close', (event: CloseEvent) => {
 				if (event.wasClean) {
 					console.log('Соединение закрыто чисто');
 				} else {
@@ -48,7 +48,7 @@ export class ChatPage extends Block {
 				console.log(`Код: ${event.code} | Причина: ${event.reason}`);
 			});
 
-			this.socket.addEventListener('message', event => {
+			this.socket.on('message', event => {
 				console.log('Получены данные', event.data);
 				const data = JSON.parse(event.data);
 				if (data.type === 'message') {
@@ -67,7 +67,7 @@ export class ChatPage extends Block {
 				}
 			});
 
-			this.socket.addEventListener('error', event => {
+			this.socket.on('error', event => {
 				// @ts-ignore
 				console.log('Ошибка', event.message);
 			});
@@ -81,7 +81,7 @@ export class ChatPage extends Block {
 		return super.componentDidUpdate(oldProps, newProps);
 	}
 
-	socket: Nullable<WebSocket> = null;
+	socket: Nullable<MySocket> = null;
 
 	private static validateUsersPrompt(users: string): boolean {
 		const usersRegExp = /[\d,]+/;
@@ -102,10 +102,10 @@ export class ChatPage extends Block {
 					error: validateValue(ValidationRule.Message, value)
 				};
 				if (!nextState.error) {
-					this.socket && this.socket.send(JSON.stringify({
+					this.socket && this.socket.send({
 						content: value,
 						type: 'message',
-					}));
+					});
 				}
 				this.setState(nextState);
 			},
