@@ -1,8 +1,6 @@
 import Block from '../../core/Block';
-
+import router from "../../core/Router";
 import './link.css';
-import renderBlock from "../../core/renderBlock";
-import ErrorPage from "../../pages/error";
 
 export interface LinkProps {
 	text: string;
@@ -12,34 +10,11 @@ export interface LinkProps {
 export class Link extends Block {
 	constructor(props: LinkProps) {
 		const onClick = (e: MouseEvent) => {
-			console.log('Link onClick()', this);
-			//TODO нужно ли router.go(this.props.to);
 			try {
-				const to = this.props.to;
-				let app;
-				switch (to.substring(1)) {
-					case "404":
-						app = new ErrorPage({
-							h1: "404",
-							h2: "Не туда попали"
-						});
-						break;
-					case "500":
-						app = new ErrorPage({
-							h1: "500",
-							h2: "Уже фиксим"
-						});
-						break;
-					default:
-						document.location.href = to;
-				}
-				if (app) {
-					renderBlock('#app', app);
-				}
+				router.go(props.to);
 			}
 			catch (err) {
 				console.error(err);
-				//TODO this.eventBus().emit('error')
 			}
 			e.preventDefault();
 		}
