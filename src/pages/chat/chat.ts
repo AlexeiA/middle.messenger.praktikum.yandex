@@ -51,7 +51,14 @@ export class ChatPage extends Block {
 
 			this.socket.on('message', event => {
 				console.log('Получены данные', event.data);
-				const data = JSON.parse(event.data);
+				let data;
+				try {
+					data = JSON.parse(event.data);
+				}
+				catch (error) {
+					console.error('Некорректный формат данных');
+					return;
+				}
 				if (data.type === 'message') {
 					this.state.messages.push({
 						content: sanitize(data.content),
