@@ -14,13 +14,6 @@ export default class Route {
 	private _block: Nullable<Block>;
 	private _props: any;
 
-	navigate(pathname: string) {
-		if (this.match(pathname)) {
-			this._pathname = pathname;
-			this.render();
-		}
-	}
-
 	leave() {
 		if (this._block) {
 			this._block.hide().detach();
