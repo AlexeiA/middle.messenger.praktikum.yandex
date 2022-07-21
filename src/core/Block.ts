@@ -29,6 +29,8 @@ export default abstract class Block<P = any> {
 	protected state: any = {};
 	public readonly refs: { [key: string]: Block } = {};
 
+	private _parentElement: Nullable<HTMLElement> = null;
+
 	public constructor(props?: P) {
 		const eventBus = new EventBus<Events>();
 
@@ -239,9 +241,32 @@ export default abstract class Block<P = any> {
 
 	show() {
 		this.getContent().style.display = 'block';
+		return this;
 	}
 
 	hide() {
 		this.getContent().style.display = 'none';
+		return this;
+	}
+
+	attach(parent?: HTMLElement) {
+		const content = this.getContent();
+		if (!content.parentElement) {
+			const parentElement = parent || this._parentElement;
+			if (parentElement) {
+				parentElement.appendChild(content);
+			}
+			this._parentElement = parentElement;
+		}
+		return this;
+	}
+
+	detach() {
+		const content = this.getContent();
+		if (content.parentElement) {
+			this._parentElement = content.parentElement;
+			content.parentElement.removeChild(content);
+		}
+		return this;
 	}
 }
