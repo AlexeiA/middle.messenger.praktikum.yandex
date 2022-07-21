@@ -77,11 +77,6 @@ export class ChatPage extends Block {
 		});
 	}
 
-	componentDidUpdate(oldProps: any, newProps: any): boolean {
-		console.log('componentDidUpdate', this, oldProps, newProps);
-		return super.componentDidUpdate(oldProps, newProps);
-	}
-
 	socket: Nullable<MySocket> = null;
 
 	private static validateUsersPrompt(users: string): boolean {
