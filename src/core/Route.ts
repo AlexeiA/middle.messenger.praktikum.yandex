@@ -1,5 +1,5 @@
 import Block from "./Block";
-import { render } from "./renderDOM";
+import renderBlock from "./renderBlock";
 
 export default class Route {
 	constructor(pathname: string, view: new() => Block, props?: {}) {
@@ -34,7 +34,7 @@ export default class Route {
 	render() {
 		if (!this._block) {
 			this._block = new this._blockClass();
-			render(this._props.rootQuery, this._block);
+			renderBlock(this._props.rootQuery, this._block);
 			return;
 		}
 

@@ -1,7 +1,7 @@
 import Block from '../../core/Block';
 
 import './link.css';
-import {renderDOM} from "../../core";
+import renderBlock from "../../core/renderBlock";
 import ErrorPage from "../../pages/error";
 
 export interface LinkProps {
@@ -34,7 +34,7 @@ export class Link extends Block {
 						document.location.href = to;
 				}
 				if (app) {
-					renderDOM(app);
+					renderBlock('#app', app);
 				}
 			}
 			catch (err) {
