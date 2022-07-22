@@ -1,7 +1,7 @@
 import Block from "./Block";
 import Route from "./Route";
 
-class Router {
+export class Router {
 	constructor(rootQuery: string) {
 		this._rootQuery = rootQuery;
 	}
