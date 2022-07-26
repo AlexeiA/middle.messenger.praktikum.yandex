@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 
-import router, {Router} from "./Router";
-import Block from "./Block";
-import Route from "./Route";
-import registerComponent from "./registerComponent";
+import router, {Router} from "../Router";
+import Block from "../Block";
+import Route from "../Route";
+import registerComponent from "../registerComponent";
 
 class TestBlock extends Block {}
 registerComponent(TestBlock);
