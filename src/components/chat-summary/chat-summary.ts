@@ -1,7 +1,8 @@
 import Block from '../../core/Block';
+import store from "../../core/Store";
 
 import './chat-summary.pcss';
-import store from "../../core/Store";
+import '/src/static/chat_avatar_generic.png'
 
 interface ChatSummaryProps {
 	id: number;

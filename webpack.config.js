@@ -6,7 +6,8 @@ module.exports = {
 	entry: './src/index.ts',
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'app.bundle.js'
+		filename: 'app.bundle.js',
+		assetModuleFilename: "static/[name][ext]"
 	},
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
@@ -14,6 +15,7 @@ module.exports = {
 	},
 	plugins: [new HtmlWebpackPlugin({
 		template: "./src/index.html",
+		favicon: "./src/static/favicon.png"
 	})],
 	devServer: {
 		compress: false,
