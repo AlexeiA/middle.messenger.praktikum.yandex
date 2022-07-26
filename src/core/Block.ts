@@ -257,10 +257,14 @@ export default abstract class Block<P = any> {
 		return this;
 	}
 
-	attach(parent?: HTMLElement) {
+	attach() {
+		return this.attachTo(this._parentElement);
+	}
+
+	attachTo(parent: HTMLElement | null) {
 		const content = this.getContent();
-		if (!content.parentElement) {
-			const parentElement = parent || this._parentElement;
+		if (!content || !content.parentElement) {
+			const parentElement = parent;
 			if (parentElement) {
 				parentElement.appendChild(content);
 			}
