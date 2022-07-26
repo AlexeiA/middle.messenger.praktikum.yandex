@@ -18,7 +18,12 @@ export class ProfileEditPage extends Block {
 	protected getStateFromProps() {
 		console.log('getStateFromProps', this);
 		this.state = {
-			values: { ...store.getState().user, currentAvatar: store.getState().user?.avatar },
+			values: {
+				...store.getState().user,
+				currentAvatar: store.getState().user?.avatar,
+				oldPassword: '',
+				newPassword: ''
+			},
 			errors: {
 				display_name: '',
 				first_name: '',
