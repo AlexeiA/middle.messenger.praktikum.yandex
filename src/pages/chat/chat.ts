@@ -30,15 +30,22 @@ export class ChatPage extends Block {
 					content: `Я, пользователь ${userId}, отключился!`,
 					type: 'message',
 				});
+				this.state.messages = [];
 				this.socket.close(1000, 'Смена чата');
 			}
 			this.socket = new MySocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`);
 			this.socket.on('open', () => {
 				console.log('Соединение установлено');
-				this.socket && this.socket.send({
-					content: `Я, пользователь ${userId}, подключился!`,
-					type: 'message',
-				});
+				if (this.socket) {
+					this.socket.send({
+						content: '0',
+						type: 'get old'
+					});
+					this.socket.send({
+						content: `Я, пользователь ${userId}, подключился!`,
+						type: 'message'
+					});
+				}
 			});
 
 			this.socket.on('close', (event: CloseEvent) => {
@@ -63,26 +70,42 @@ export class ChatPage extends Block {
 				}
 				if (data.type === 'message') {
 					this.state.messages.push({
+						id: data.id,
 						content: sanitize(data.content),
 						direction: data.user_id === userId ? 'out' : 'in'
 					});
-					this.setState({messages: this.state.messages});
 				}
 				else if (data.type === 'user connected') {
 					this.state.messages.push({
+						id: data.id,
 						content: `Пользователь ${data.content} подключился`,
 						direction: 'system'
 					});
-					this.setState({messages: this.state.messages});
+
 				}
+				else if (Array.isArray(data)) {//old messages
+					data.forEach((msg) => {
+						this.state.messages.push({
+							id: msg.id,
+							content: sanitize(`${msg.content}`),
+							direction: msg.user_id === userId ? 'out' : 'in'
+						});
+					});
+					this.state.messages.sort(function (a: {id: number}, b: {id: number}) {
+						return b.id - a.id;
+					});
+				}
+				else {
+					console.warn('Неизвестный формат данных', data);
+					return;
+				}
+				this.setState({messages: this.state.messages});
 			});
 
 			this.socket.on('error', event => {
 				// @ts-ignore
 				console.log('Ошибка', event.message);
 			});
-
-			//TODO ping-pong
 		});
 	}
 
@@ -206,6 +229,13 @@ export class ChatPage extends Block {
 				</div>
 			{{/Layout}}
 		`;
+	}
+
+	protected renderComplete() {
+		const historyElement = document.querySelector('.chat .history');
+		if (historyElement) {
+			historyElement.scrollTop = historyElement.scrollHeight;
+		}
 	}
 }
 
