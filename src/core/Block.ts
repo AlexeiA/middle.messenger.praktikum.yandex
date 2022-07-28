@@ -263,7 +263,7 @@ export default abstract class Block<P = any> {
 
 	attachTo(parent: HTMLElement | null) {
 		const content = this.getContent();
-		if (!content || !content.parentElement) {
+		if (content && !content.parentElement) {
 			const parentElement = parent;
 			if (parentElement) {
 				parentElement.appendChild(content);
