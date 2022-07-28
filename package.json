@@ -7,7 +7,8 @@
     "serve": "webpack serve --open",
     "start": "npm run prod && node server.js",
     "build": "webpack",
-    "prod": "webpack --config webpack.prod.js"
+    "prod": "webpack --config webpack.prod.js",
+    "docker": "npm run prod && docker build ."
   },
   "alias": {
     "nanoid": "./node_modules/nanoid/index.browser",
