@@ -8,20 +8,16 @@ const endpoint = process.env.API_ENDPOINT || 'www.server.com';
 const url = `${endpoint}/`;
 
 const handlers = [
-	// @ts-ignore
-	rest.get(url, (req, res, ctx) => {
+	rest.get(url, (_req, res, ctx) => {
 		return res(ctx.status(200), ctx.body('test get'));
 	}),
-	// @ts-ignore
-	rest.post(url, (req, res, ctx) => {
+	rest.post(url, (_req, res, ctx) => {
 		return res(ctx.status(200), ctx.body('test post'));
 	}),
-	// @ts-ignore
-	rest.put(url, (req, res, ctx) => {
+	rest.put(url, (_req, res, ctx) => {
 		return res(ctx.status(200), ctx.body('test put'));
 	}),
-	// @ts-ignore
-	rest.delete(url, (req, res, ctx) => {
+	rest.delete(url, (_req, res, ctx) => {
 		return res(ctx.status(200), ctx.body('test delete'));
 	}),
 ];

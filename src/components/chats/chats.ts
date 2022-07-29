@@ -13,8 +13,7 @@ export class ChatsBlock extends Block {
 			// @ts-ignore
 			store.dispatch({currentChatId: parseInt(event.currentTarget.dataset.id)});
 		}});
-		// @ts-ignore
-		store.on('changed', (prevState, nextState) => {
+		store.on('changed', (_, __) => {
 			this.setState({chats: store.getState().chats});
 		});
 		store.dispatch(getChats);

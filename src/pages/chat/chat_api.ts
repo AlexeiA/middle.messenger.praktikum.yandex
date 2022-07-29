@@ -113,8 +113,7 @@ export const getChats = async (
 
 export const createChat = async (
 	dispatch: Dispatch<AppState>,
-	// @ts-ignore
-	state: AppState,
+	_: AppState,
 	data: CreateChatRequestData,
 ) => {
 	console.log('dispatching', this);
@@ -135,8 +134,7 @@ export const createChat = async (
 
 export const addUsersToChat = async (
 	dispatch: Dispatch<AppState>,
-	// @ts-ignore
-	state: AppState,
+	_: AppState,
 	data: ChatUsersRequestData,
 ) => {
 	console.log('dispatching', this);
@@ -156,8 +154,7 @@ export const addUsersToChat = async (
 
 export const removeUsersFromChat = async (
 	dispatch: Dispatch<AppState>,
-	// @ts-ignore
-	state: AppState,
+	_: AppState,
 	data: ChatUsersRequestData,
 ) => {
 	console.log('dispatching', this);
@@ -177,8 +174,7 @@ export const removeUsersFromChat = async (
 
 export const getToken = async (
 	dispatch: Dispatch<AppState>,
-	// @ts-ignore
-	state: AppState,
+	_: AppState,
 	data: number,
 ) => {
 	console.log('dispatching', this);

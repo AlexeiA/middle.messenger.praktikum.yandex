@@ -33,8 +33,8 @@ export class Router {
 	}
 
 	private onpopstate = (event: PopStateEvent)  => {
-		// @ts-ignore
-		this._onRoute(event.currentTarget.location.pathname);
+		const target = event.currentTarget as Document;
+		this._onRoute(target.location.pathname);
 	};
 
 	_onRoute(pathname: string) {

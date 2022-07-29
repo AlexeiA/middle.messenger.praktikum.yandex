@@ -58,8 +58,7 @@ type LoginResponseData = void | { reason: string };
 
 export const login = async (
 	dispatch: Dispatch<AppState>,
-	// @ts-ignore
-	state: AppState,
+	_: AppState,
 	data: LoginRequestData,
 ) => {
 	console.log('dispatching', this);debugger;

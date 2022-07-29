@@ -2,10 +2,6 @@ import EventBus from './EventBus';
 import {nanoid} from 'nanoid';
 import Handlebars from 'handlebars';
 
-interface BlockMeta<P = any> {
-	props: P;
-}
-
 type Events = Values<typeof Block.EVENTS>;
 
 export default abstract class Block<P = any> {
@@ -18,8 +14,6 @@ export default abstract class Block<P = any> {
 	} as const;
 
 	public id = nanoid(6);
-	// @ts-ignore
-	private readonly _meta: BlockMeta;
 
 	protected _element: Nullable<HTMLElement> = null;
 	protected readonly props: P;
@@ -34,10 +28,6 @@ export default abstract class Block<P = any> {
 
 	public constructor(props?: P) {
 		const eventBus = new EventBus<Events>();
-
-		this._meta = {
-			props,
-		};
 
 		this.getStateFromProps(props)
 
@@ -63,8 +53,7 @@ export default abstract class Block<P = any> {
 		this._element = this._createDocumentElement('div');
 	}
 
-	// @ts-ignore
-	protected getStateFromProps(props: any): void {
+	protected getStateFromProps(_props: any): void {
 		this.state = {};
 	}
 
@@ -78,8 +67,7 @@ export default abstract class Block<P = any> {
 		this.componentDidMount(props);
 	}
 
-	// @ts-ignore
-	componentDidMount(props: P) {
+	componentDidMount(_props: P) {
 	}
 
 	private _componentDidUpdate(oldProps: P, newProps: P) {
@@ -91,8 +79,7 @@ export default abstract class Block<P = any> {
 		this._render();
 	}
 
-	// @ts-ignore
-	componentDidUpdate(oldProps: P, newProps: P) {
+	componentDidUpdate(_oldProps: P, _newProps: P) {
 		return true;
 	}
 

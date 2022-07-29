@@ -48,8 +48,7 @@ type RegisterResponseData = { id: number } | { reason: string };
 
 export const register = async (
 	dispatch: Dispatch<AppState>,
-	// @ts-ignore
-	state: AppState,
+	_: AppState,
 	data: RegisterRequestData,
 ) => {
 	console.log('dispatching', this);debugger;
