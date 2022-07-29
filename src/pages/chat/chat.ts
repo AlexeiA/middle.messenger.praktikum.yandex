@@ -1,7 +1,6 @@
 import Block from '../../core/Block';
 
 import './chat.pcss';
-import '/src/static/avatar_generic.png';
 
 import {validateValue, ValidationRule} from "../../helpers/validator";
 import MySocket from "../../core/MySocket";

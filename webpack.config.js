@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
@@ -13,10 +14,17 @@ module.exports = {
 		extensions: ['.ts', '.js', '.json'],
 		alias: {'handlebars' : 'handlebars/dist/handlebars.js'}
 	},
-	plugins: [new HtmlWebpackPlugin({
-		template: "./src/index.html",
-		favicon: "./src/static/favicon.png"
-	})],
+	plugins: [
+		new HtmlWebpackPlugin({
+			template: "./src/index.html",
+			favicon: "./src/static/favicon.png"
+		}),
+		new CopyPlugin({
+			patterns: [
+				{ from: "src/static", to: "static" },
+			],
+		}),
+	],
 	devServer: {
 		compress: false,
 		port: 1234,
