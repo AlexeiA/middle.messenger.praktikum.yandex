@@ -3,7 +3,7 @@ import HTTPTransport from "../HTTPTransport";
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 
-const endpoint = process.env.API_ENDPOINT || 'www.server.com';
+const endpoint = 'www.server.com';
 
 const url = `${endpoint}/`;
 
