@@ -1,7 +1,6 @@
 FROM node:16-slim
 WORKDIR /var/www
-RUN npm i express
-COPY ./dist/* dist/
-COPY ./server.js .
+COPY . .
+RUN npm i
 EXPOSE 3000
-CMD node server.js
+CMD node run start
