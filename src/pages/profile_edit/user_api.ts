@@ -3,7 +3,7 @@ import type { Dispatch } from '../../core/Store';
 
 export class UserApi {
 	private static http = new HTTPTransport({credentials: true});
-	private static baseUri = 'https://ya-praktikum.tech/api/v2';
+	private static baseUri = process.env.API_ENDPOINT;
 
 	static profile(data: ProfileRequestData) {
 		return new Promise<ProfileResponseData>((resolve, reject) => {

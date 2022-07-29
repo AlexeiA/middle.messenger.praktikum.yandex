@@ -4,7 +4,7 @@ import router from "../../core/Router";
 
 class RegisterApi {
 	private static http = new HTTPTransport({credentials: true});
-	private static baseUri = 'https://ya-praktikum.tech/api/v2';
+	private static baseUri = process.env.API_ENDPOINT;
 
 	static register(data: RegisterRequestData) {
 		return new Promise<RegisterResponseData>((resolve, reject) => {

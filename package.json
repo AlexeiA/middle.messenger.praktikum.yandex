@@ -39,6 +39,7 @@
     "chai": "4.3.6",
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.7.1",
+    "dotenv-webpack": "8.0.0",
     "eslint": "8.16.0",
     "global-jsdom": "8.5.0",
     "handlebars": "4.7.7",

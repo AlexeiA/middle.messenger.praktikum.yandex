@@ -80,7 +80,7 @@ export class ProfileEditPage extends Block {
 
 	render() {
 		const {errors, values} = this.state;
-		const avatar = 'https://ya-praktikum.tech/api/v2' + '/resources' + this.state.values.currentAvatar;
+		const avatar = process.env.API_ENDPOINT + '/resources' + this.state.values.currentAvatar;
 		const isLoading = store.getState().isLoading;
 		console.log(`avatar=${avatar}`);
 		// language=hbs

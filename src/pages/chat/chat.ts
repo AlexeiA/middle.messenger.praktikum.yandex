@@ -32,7 +32,7 @@ export class ChatPage extends Block {
 				this.state.messages = [];
 				this.socket.close(1000, 'Смена чата');
 			}
-			this.socket = new MySocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`);
+			this.socket = new MySocket(`${process.env.WSS_ENDPOINT}/chats/${userId}/${chatId}/${token}`);
 			this.socket.on('open', () => {
 				console.log('Соединение установлено');
 				if (this.socket) {

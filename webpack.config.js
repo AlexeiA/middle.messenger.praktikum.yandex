@@ -1,4 +1,5 @@
 const path = require('path');
+const DotEnv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
@@ -24,6 +25,7 @@ module.exports = {
 				{ from: "src/static", to: "static" },
 			],
 		}),
+		new DotEnv()
 	],
 	devServer: {
 		compress: false,
