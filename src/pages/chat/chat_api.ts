@@ -92,7 +92,7 @@ export const getChats = async (
 	dispatch({ isLoading: true });
 
 	try {
-		let chats = await ChatApi.getChats() as ChatsResponseData;
+		let chats = await ChatApi.getChats();
 		console.log(chats);
 		let nextState = {
 			isLoading: false, chats
