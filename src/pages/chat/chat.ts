@@ -1,15 +1,12 @@
 import Block from '../../core/Block';
 
 import './chat.pcss';
+
 import {validateValue, ValidationRule} from "../../helpers/validator";
+import MySocket from "../../core/MySocket";
+import router from "../../core/Router";
 import store from "../../core/Store";
 import {addUsersToChat, createChat, getToken, removeUsersFromChat} from "./chat_api";
-import router from "../../core/Router";
-
-type Message = {
-	content: string,
-	direction: 'in' | 'out' | 'system'
-}
 
 export class ChatPage extends Block {
 	constructor() {
@@ -21,29 +18,36 @@ export class ChatPage extends Block {
 				store.dispatch(getToken, nextState.currentChatId);
 				return;
 			}
-			if (prevState.currentToken == nextState.currentToken) {
+			if (prevState.currentToken === nextState.currentToken) {
 				return;
 			}
 			const token = store.getState().currentToken;
-			const userId = store.getState().user.id;
+			const userId = store.getState().user?.id;
 			const chatId = store.getState().currentChatId;
 			if (this.socket) {
-				this.socket.send(JSON.stringify({
+				this.socket.send({
 					content: `Я, пользователь ${userId}, отключился!`,
 					type: 'message',
-				}));
+				});
+				this.state.messages = [];
 				this.socket.close(1000, 'Смена чата');
 			}
-			this.socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`);
-			this.socket.addEventListener('open', () => {
+			this.socket = new MySocket(`${process.env.WSS_ENDPOINT}/chats/${userId}/${chatId}/${token}`);
+			this.socket.on('open', () => {
 				console.log('Соединение установлено');
-				this.socket && this.socket.send(JSON.stringify({
-					content: `Я, пользователь ${userId}, подключился!`,
-					type: 'message',
-				}));
+				if (this.socket) {
+					this.socket.send({
+						content: '0',
+						type: 'get old'
+					});
+					this.socket.send({
+						content: `Я, пользователь ${userId}, подключился!`,
+						type: 'message'
+					});
+				}
 			});
 
-			this.socket.addEventListener('close', event => {
+			this.socket.on('close', (event: CloseEvent) => {
 				if (event.wasClean) {
 					console.log('Соединение закрыто чисто');
 				} else {
@@ -53,33 +57,63 @@ export class ChatPage extends Block {
 				console.log(`Код: ${event.code} | Причина: ${event.reason}`);
 			});
 
-			this.socket.addEventListener('message', event => {
+			this.socket.on('message', event => {
 				console.log('Получены данные', event.data);
-				const data = JSON.parse(event.data);
-				if (data.type == 'message') {
-					this.state.messages.push({content: sanitize(data.content), direction: data.user_id == userId ? 'out' : 'in'});
-					this.setState({messages: this.state.messages});
+				let data;
+				try {
+					data = JSON.parse(event.data);
 				}
-				else if (data.type == 'user connected') {
-					this.state.messages.push({content: `Пользователь ${data.content} подключился`, direction: 'system'});
-					this.setState({messages: this.state.messages});
+				catch (error) {
+					console.error('Некорректный формат данных');
+					return;
 				}
+				if (data.type === 'message') {
+					this.state.messages.push({
+						id: data.id,
+						content: sanitize(data.content),
+						direction: data.user_id === userId ? 'out' : 'in'
+					});
+				}
+				else if (data.type === 'user connected') {
+					this.state.messages.push({
+						id: data.id,
+						content: `Пользователь ${data.content} подключился`,
+						direction: 'system'
+					});
+
+				}
+				else if (Array.isArray(data)) {//old messages
+					data.forEach((msg) => {
+						this.state.messages.push({
+							id: msg.id,
+							content: sanitize(`${msg.content}`),
+							direction: msg.user_id === userId ? 'out' : 'in'
+						});
+					});
+					this.state.messages.sort(function (a: {id: number}, b: {id: number}) {
+						return b.id - a.id;
+					});
+				}
+				else {
+					console.warn('Неизвестный формат данных', data);
+					return;
+				}
+				this.setState({messages: this.state.messages});
 			});
 
-			this.socket.addEventListener('error', event => {
+			this.socket.on('error', event => {
+				// @ts-ignore
 				console.log('Ошибка', event.message);
 			});
-
-			//TODO ping-pong
 		});
 	}
 
-	componentDidUpdate(oldProps: any, newProps: any): boolean {
-		console.log('componentDidUpdate', this, oldProps, newProps);
-		return super.componentDidUpdate(oldProps, newProps);
-	}
+	socket: Nullable<MySocket> = null;
 
-	socket: Nullable<WebSocket> = null;
+	private static validateUsersPrompt(users: string): boolean {
+		const usersRegExp = /[\d,]+/;
+		return usersRegExp.test(users);
+	}
 
 	protected getStateFromProps() {
 		this.state = {
@@ -95,10 +129,10 @@ export class ChatPage extends Block {
 					error: validateValue(ValidationRule.Message, value)
 				};
 				if (!nextState.error) {
-					this.socket && this.socket.send(JSON.stringify({
+					this.socket && this.socket.send({
 						content: value,
 						type: 'message',
-					}));
+					});
 				}
 				this.setState(nextState);
 			},
@@ -111,7 +145,7 @@ export class ChatPage extends Block {
 			addUsers: () => {
 				const users = prompt('Идентификаторы пользователей для добавления', 'Например: 123,456');
 				if (users) {
-					if (/[\d,]+/.test(users)) {
+					if (ChatPage.validateUsersPrompt(users)) {
 						store.dispatch(addUsersToChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
 					}
 					else {
@@ -122,7 +156,7 @@ export class ChatPage extends Block {
 			removeUsers: () => {
 				const users = prompt('Идентификаторы пользователей для удаления', 'Например: 123,456');
 				if (users) {
-					if (/[\d,]+/.test(users)) {
+					if (ChatPage.validateUsersPrompt(users)) {
 						store.dispatch(removeUsersFromChat, {users: JSON.parse(`[${users}]`), chatId: store.getState().currentChatId});
 					}
 					else {
@@ -138,7 +172,7 @@ export class ChatPage extends Block {
 
 	render() {
 		console.log('render', this);
-		const {value, error, messages} = this.state;
+		const {value, error} = this.state;
 		const chatId = store.getState().currentChatId;
 		// language=hbs
 		return `
@@ -194,6 +228,13 @@ export class ChatPage extends Block {
 				</div>
 			{{/Layout}}
 		`;
+	}
+
+	protected renderComplete() {
+		const historyElement = document.querySelector('.chat .history');
+		if (historyElement) {
+			historyElement.scrollTop = historyElement.scrollHeight;
+		}
 	}
 }
 

@@ -1,14 +1,13 @@
 import HTTPTransport from "../../core/HTTPTransport";
 import type { Dispatch } from '../../core/Store';
-import router from "../../core/Router";
 
 export class ChatApi {
-	private static http = new HTTPTransport();
-	private static baseUri = 'https://ya-praktikum.tech/api/v2';
+	private static http = new HTTPTransport({credentials: true});
+	private static baseUri = process.env.API_ENDPOINT;
 
 	static getChats() {
 		return new Promise<ChatsResponseData>((resolve, reject) => {
-			this.http.get(this.baseUri + '/chats', { credentials: true })
+			this.http.get(this.baseUri + '/chats')
 				.then((xhr) => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -22,7 +21,7 @@ export class ChatApi {
 
 	static createChat(data: CreateChatRequestData) {
 		return new Promise<void>((resolve, reject) => {
-			this.http.post(this.baseUri + '/chats', {credentials: true, data})
+			this.http.post(this.baseUri + '/chats', {data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -36,7 +35,7 @@ export class ChatApi {
 
 	static addUsers(data: ChatUsersRequestData) {
 		return new Promise<void>((resolve, reject) => {
-			this.http.put(this.baseUri + '/chats/users', {credentials: true, data})
+			this.http.put(this.baseUri + '/chats/users', {data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -50,7 +49,7 @@ export class ChatApi {
 
 	static removeUsers(data: ChatUsersRequestData) {
 		return new Promise<void>((resolve, reject) => {
-			this.http.delete(this.baseUri + '/chats/users', {credentials: true, data})
+			this.http.delete(this.baseUri + '/chats/users', {data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -64,7 +63,7 @@ export class ChatApi {
 
 	static getToken(chatId: number) {
 		return new Promise<ChatTokenResponseData>((resolve, reject) => {
-			this.http.post(`${this.baseUri}/chats/token/${chatId}`, {credentials: true})
+			this.http.post(`${this.baseUri}/chats/token/${chatId}`)
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -77,18 +76,17 @@ export class ChatApi {
 	}
 }
 
-type ChatsResponseData = ChatData[] | { reason: string };
+type ChatsResponseData = ChatData[];
 
 type CreateChatRequestData = { title: string };
 
 type ChatUsersRequestData = { users: number[], chatId: number };
 
-type ChatTokenResponseData = { token: string } | { reason: string };
+type ChatTokenResponseData = { token: string };
 
 export const getChats = async (
 	dispatch: Dispatch<AppState>,
 	state: AppState,
-	data: null,
 ) => {
 	console.log('dispatching', this);
 	dispatch({ isLoading: true });
@@ -107,6 +105,7 @@ export const getChats = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 
 	}
@@ -114,7 +113,7 @@ export const getChats = async (
 
 export const createChat = async (
 	dispatch: Dispatch<AppState>,
-	state: AppState,
+	_: AppState,
 	data: CreateChatRequestData,
 ) => {
 	console.log('dispatching', this);
@@ -128,13 +127,14 @@ export const createChat = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 	}
 };
 
 export const addUsersToChat = async (
 	dispatch: Dispatch<AppState>,
-	state: AppState,
+	_: AppState,
 	data: ChatUsersRequestData,
 ) => {
 	console.log('dispatching', this);
@@ -147,13 +147,14 @@ export const addUsersToChat = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 	}
 };
 
 export const removeUsersFromChat = async (
 	dispatch: Dispatch<AppState>,
-	state: AppState,
+	_: AppState,
 	data: ChatUsersRequestData,
 ) => {
 	console.log('dispatching', this);
@@ -166,13 +167,14 @@ export const removeUsersFromChat = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 	}
 };
 
 export const getToken = async (
 	dispatch: Dispatch<AppState>,
-	state: AppState,
+	_: AppState,
 	data: number,
 ) => {
 	console.log('dispatching', this);
@@ -185,6 +187,7 @@ export const getToken = async (
 	catch (error) {
 		console.error(error);
 		dispatch({isLoading: false});
+		// @ts-ignore
 		alert(`Ошибка: ${error?.reason}`);
 	}
 };

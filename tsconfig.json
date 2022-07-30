@@ -1,7 +1,10 @@
 {
+  "ts-node": {
+    "files": true
+  },
   "compilerOptions": {
     "target": "ES2017",
-    "module": "ES6",
+    "module": "CommonJS",
     "rootDir": "./",
     "moduleResolution": "node",
     "typeRoots": [

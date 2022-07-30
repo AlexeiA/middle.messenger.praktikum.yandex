@@ -3,12 +3,12 @@ import type { Dispatch } from '../../core/Store';
 import router from "../../core/Router";
 
 class RegisterApi {
-	private static http = new HTTPTransport();
-	private static baseUri = 'https://ya-praktikum.tech/api/v2';
+	private static http = new HTTPTransport({credentials: true});
+	private static baseUri = process.env.API_ENDPOINT;
 
 	static register(data: RegisterRequestData) {
 		return new Promise<RegisterResponseData>((resolve, reject) => {
-			this.http.post(this.baseUri + '/auth/signup', {data, credentials: true})
+			this.http.post(this.baseUri + '/auth/signup', {data})
 				.then((xhr) => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -22,7 +22,7 @@ class RegisterApi {
 
 	static user() {
 		return new Promise<User>((resolve, reject) => {
-			this.http.get(this.baseUri + '/auth/user', {credentials: true})
+			this.http.get(this.baseUri + '/auth/user')
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -48,12 +48,11 @@ type RegisterResponseData = { id: number } | { reason: string };
 
 export const register = async (
 	dispatch: Dispatch<AppState>,
-	state: AppState,
+	_: AppState,
 	data: RegisterRequestData,
 ) => {
 	console.log('dispatching', this);debugger;
 	dispatch({ isLoading: true });
-
 	try {
 		const response = await RegisterApi.register(data);
 		console.log(response);

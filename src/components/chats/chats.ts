@@ -9,10 +9,11 @@ import {getChats} from "../../pages/chat/chat_api";
 export class ChatsBlock extends Block {
 	constructor() {
 		console.log('constructor ChatsBlock');
-		super({onClick: (event) => {
+		super({onClick: (event: Event) => {
+			// @ts-ignore
 			store.dispatch({currentChatId: parseInt(event.currentTarget.dataset.id)});
 		}});
-		store.on('changed', (prevState, nextState) => {
+		store.on('changed', (_, __) => {
 			this.setState({chats: store.getState().chats});
 		});
 		store.dispatch(getChats);
@@ -25,7 +26,6 @@ export class ChatsBlock extends Block {
 	}
 
 	render() {
-		const {chats} = this.state;
 		// language=hbs
 		return `
 			<div>

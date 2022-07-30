@@ -1,14 +1,13 @@
 import HTTPTransport from "../../core/HTTPTransport";
 import type { Dispatch } from '../../core/Store';
-import router from "../../core/Router";
 
 export class UserApi {
-	private static http = new HTTPTransport();
-	private static baseUri = 'https://ya-praktikum.tech/api/v2';
+	private static http = new HTTPTransport({credentials: true});
+	private static baseUri = process.env.API_ENDPOINT;
 
 	static profile(data: ProfileRequestData) {
 		return new Promise<ProfileResponseData>((resolve, reject) => {
-			this.http.put(this.baseUri + '/user/profile', { data, credentials: true })
+			this.http.put(this.baseUri + '/user/profile', {data})
 				.then((xhr) => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -22,7 +21,7 @@ export class UserApi {
 
 	static password(data: ProfilePasswordRequestData) {
 		return new Promise<void | {reason: string}>((resolve, reject) => {
-			this.http.put(this.baseUri + '/user/password', {credentials: true, data})
+			this.http.put(this.baseUri + '/user/password', {data})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -41,7 +40,7 @@ export class UserApi {
 		return new Promise<ProfileResponseData>((resolve, reject) => {
 			const formData = new FormData();
 			formData.append('avatar', data.avatarData);
-			this.http.put(this.baseUri + '/user/profile/avatar', {credentials: true, data: formData})
+			this.http.put(this.baseUri + '/user/profile/avatar', {data: formData})
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -64,6 +63,7 @@ type ProfileAvatarRequestData = { avatarData: Blob };
 
 export const updateUser = async (
 	dispatch: Dispatch<AppState>,
+	// @ts-ignore
 	state: AppState,
 	data: User & {avatarData: Blob} & {oldPassword: string, newPassword: string},
 ) => {
@@ -87,6 +87,7 @@ export const updateUser = async (
 	}
 	catch (error) {
 		console.error(error);
-		alert(`Ошибка: ${error?.reason}`);
+		// @ts-ignore
+		alert(`Ошибка: ${error.reason}`);
 	}
 };

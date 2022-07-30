@@ -1,3 +1,5 @@
+import toArray from "./utils/toArray";
+
 export enum METHODS {
 	GET = 'GET',
 	PUT = 'PUT',
@@ -14,22 +16,6 @@ function queryStringify(data: {}) {
 	return '?' + toArray(data).join('&');
 }
 
-function toArray(obj: any) {
-	let arr: Array<string> = [];
-	Object.entries(obj).forEach(([k, v]) => {
-		if (Array.isArray(v)) {
-			arr.push(k + '=' + v.join(','));
-		}
-		else if (v && typeof v === 'object') {
-			arr.push(k + '=' + v.toString());
-		}
-		else {
-			arr.push(`${k}=${v}`);
-		}
-	});
-	return arr;
-}
-
 interface IRequestOptions {
 	method: METHODS;
 	data?: any;
@@ -41,28 +27,37 @@ interface IRequestOptions {
 type RequestOptions = Omit<IRequestOptions, 'method'>;
 
 export default class HTTPTransport {
-	get = (url: string, options: RequestOptions) => {
+	constructor(options?: RequestOptions) {
+		this.options = options || {};
+	}
+
+	options: RequestOptions;
+
+	get = (url: string, options: RequestOptions = {}) => {
+		const {data} = options;
+		if (data) {
+			url += queryStringify(data);
+		}
 		return this.request(url, {...options, method: METHODS.GET}, options.timeout);
 	};
-	put = (url: string, options: RequestOptions) => {
+	put = (url: string, options: RequestOptions = {}) => {
 		return this.request(url, {...options, method: METHODS.PUT}, options.timeout);
 	};
-	post = (url: string, options: RequestOptions) => {
+	post = (url: string, options: RequestOptions = {}) => {
 		return this.request(url, {...options, method: METHODS.POST}, options.timeout);
 	};
-	delete = (url: string, options: RequestOptions) => {
+	delete = (url: string, options: RequestOptions = {}) => {
 		return this.request(url, {...options, method: METHODS.DELETE}, options.timeout);
 	};
 
-	request = (url: string, options: IRequestOptions, timeout = 5000) => {
-		return new Promise<XMLHttpRequest>((resolve, reject) => {
-			let data = options.data;
-			let method = options.method;
-			if (method === 'GET' && data) {
-				url += queryStringify(data);
-			}
+	request = (url: string, requestOptions: IRequestOptions, timeout = 5000) => {
+		const options = {...this.options, ...requestOptions};
 
+		return new Promise<XMLHttpRequest>((resolve, reject) => {
+			const data = options.data;
+			const method = options.method;
 			const xhr = new XMLHttpRequest();
+
 			if (options.credentials) {
 				xhr.withCredentials = true;
 			}

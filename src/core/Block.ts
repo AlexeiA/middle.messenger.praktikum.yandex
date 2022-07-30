@@ -2,10 +2,6 @@ import EventBus from './EventBus';
 import {nanoid} from 'nanoid';
 import Handlebars from 'handlebars';
 
-interface BlockMeta<P = any> {
-	props: P;
-}
-
 type Events = Values<typeof Block.EVENTS>;
 
 export default abstract class Block<P = any> {
@@ -14,10 +10,10 @@ export default abstract class Block<P = any> {
 		FLOW_CDM: 'flow:component-did-mount',
 		FLOW_CDU: 'flow:component-did-update',
 		FLOW_RENDER: 'flow:render',
+		FLOW_RENDER_COMPLETE: 'flow:render-complete',
 	} as const;
 
 	public id = nanoid(6);
-	private readonly _meta: BlockMeta;
 
 	protected _element: Nullable<HTMLElement> = null;
 	protected readonly props: P;
@@ -28,12 +24,10 @@ export default abstract class Block<P = any> {
 	protected state: any = {};
 	public readonly refs: { [key: string]: Block } = {};
 
+	private _parentElement: Nullable<HTMLElement> = null;
+
 	public constructor(props?: P) {
 		const eventBus = new EventBus<Events>();
-
-		this._meta = {
-			props,
-		};
 
 		this.getStateFromProps(props)
 
@@ -52,13 +46,14 @@ export default abstract class Block<P = any> {
 		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+		eventBus.on(Block.EVENTS.FLOW_RENDER_COMPLETE, this.renderComplete.bind(this));
 	}
 
 	_createResources() {
 		this._element = this._createDocumentElement('div');
 	}
 
-	protected getStateFromProps(props: any): void {
+	protected getStateFromProps(_props: any): void {
 		this.state = {};
 	}
 
@@ -72,7 +67,7 @@ export default abstract class Block<P = any> {
 		this.componentDidMount(props);
 	}
 
-	componentDidMount(props: P) {
+	componentDidMount(_props: P) {
 	}
 
 	private _componentDidUpdate(oldProps: P, newProps: P) {
@@ -84,7 +79,7 @@ export default abstract class Block<P = any> {
 		this._render();
 	}
 
-	componentDidUpdate(oldProps: P, newProps: P) {
+	componentDidUpdate(_oldProps: P, _newProps: P) {
 		return true;
 	}
 
@@ -120,11 +115,17 @@ export default abstract class Block<P = any> {
 
 		this._element = newElement as HTMLElement;
 		this._addEvents();
+
+		this.eventBus().emit(Block.EVENTS.FLOW_RENDER_COMPLETE);
 	}
 
 	protected render(): string {
 		return '';
 	};
+
+	protected renderComplete(): void {
+
+	}
 
 	getContent(): HTMLElement {
 		// Хак, чтобы вызвать CDM только после добавления в DOM
@@ -140,21 +141,17 @@ export default abstract class Block<P = any> {
 	}
 
 	_makePropsProxy(props: any): any {
-		// Можно и так передать this
-		// Такой способ больше не применяется с приходом ES6+
-		const self = this;
-
 		return new Proxy(props as unknown as object, {
 			get(target: Record<string, unknown>, prop: string) {
 				const value = target[prop];
 				return typeof value === 'function' ? value.bind(target) : value;
 			},
-			set(target: Record<string, unknown>, prop: string, value: unknown) {
+			set: (target: Record<string, unknown>, prop: string, value: unknown) => {
 				target[prop] = value;
 
 				// Запускаем обновление компоненты
 				// Плохой cloneDeep, в след итерации нужно заставлять добавлять cloneDeep им самим
-				self.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target);
+				this.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target);
 				return true;
 			},
 			deleteProperty() {
@@ -239,9 +236,36 @@ export default abstract class Block<P = any> {
 
 	show() {
 		this.getContent().style.display = 'block';
+		return this;
 	}
 
 	hide() {
 		this.getContent().style.display = 'none';
+		return this;
+	}
+
+	attach() {
+		return this.attachTo(this._parentElement);
+	}
+
+	attachTo(parent: HTMLElement | null) {
+		const content = this.getContent();
+		if (content && !content.parentElement) {
+			const parentElement = parent;
+			if (parentElement) {
+				parentElement.appendChild(content);
+			}
+			this._parentElement = parentElement;
+		}
+		return this;
+	}
+
+	detach() {
+		const content = this.getContent();
+		if (content.parentElement) {
+			this._parentElement = content.parentElement;
+			content.parentElement.removeChild(content);
+		}
+		return this;
 	}
 }

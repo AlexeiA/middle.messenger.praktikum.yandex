@@ -3,12 +3,12 @@ import type { Dispatch } from '../../core/Store';
 import router from "../../core/Router";
 
 export class LoginApi {
-	private static http = new HTTPTransport();
-	private static baseUri = 'https://ya-praktikum.tech/api/v2';
+	private static http = new HTTPTransport({credentials: true});
+	private static baseUri = process.env.API_ENDPOINT;
 
 	static login(data: LoginRequestData) {
 		return new Promise<LoginResponseData>((resolve, reject) => {
-			this.http.post(this.baseUri + '/auth/signin', { data, credentials: true })
+			this.http.post(this.baseUri + '/auth/signin', {data})
 				.then((xhr) => {
 					if (xhr.status === 200) {
 						resolve();
@@ -22,7 +22,7 @@ export class LoginApi {
 
 	static user() {
 		return new Promise<User>((resolve, reject) => {
-			this.http.get(this.baseUri + '/auth/user', {credentials: true})
+			this.http.get(this.baseUri + '/auth/user')
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve(JSON.parse(xhr.responseText));
@@ -36,7 +36,7 @@ export class LoginApi {
 
 	static logout() {
 		return new Promise<void>((resolve, reject) => {
-			this.http.post(this.baseUri + '/auth/logout', {credentials: true})
+			this.http.post(this.baseUri + '/auth/logout')
 				.then(xhr => {
 					if (xhr.status === 200) {
 						resolve();
@@ -58,7 +58,7 @@ type LoginResponseData = void | { reason: string };
 
 export const login = async (
 	dispatch: Dispatch<AppState>,
-	state: AppState,
+	_: AppState,
 	data: LoginRequestData,
 ) => {
 	console.log('dispatching', this);debugger;

@@ -18,7 +18,12 @@ export class ProfileEditPage extends Block {
 	protected getStateFromProps() {
 		console.log('getStateFromProps', this);
 		this.state = {
-			values: { ...store.getState().user, currentAvatar: store.getState().user?.avatar },
+			values: {
+				...store.getState().user,
+				currentAvatar: store.getState().user?.avatar,
+				oldPassword: '',
+				newPassword: ''
+			},
 			errors: {
 				display_name: '',
 				first_name: '',
@@ -59,7 +64,9 @@ export class ProfileEditPage extends Block {
 					},
 					values: {...userData},
 				};
-				const avatarData = nextState.values.avatar !== this.state.values.avatar ? document.querySelector('main form input[type=file]').files[0] : null;
+				const fileInput = document.querySelector('main form input[type=file]') as HTMLInputElement;
+				const files = fileInput.files!;
+				const avatarData = nextState.values.avatar !== this.state.values.avatar ? files[0] : null;
 				this.setState(nextState);
 
 				const hasError = Object.values(nextState.errors).some(val => val !== '');
@@ -73,7 +80,7 @@ export class ProfileEditPage extends Block {
 
 	render() {
 		const {errors, values} = this.state;
-		const avatar = 'https://ya-praktikum.tech/api/v2' + '/resources' + this.state.values.currentAvatar;
+		const avatar = process.env.API_ENDPOINT + '/resources' + this.state.values.currentAvatar;
 		const isLoading = store.getState().isLoading;
 		console.log(`avatar=${avatar}`);
 		// language=hbs
